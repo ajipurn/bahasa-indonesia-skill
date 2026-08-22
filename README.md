@@ -1,5 +1,7 @@
 # bahasa-indonesia untuk coding agent
 
+[![skills.sh](https://skills.sh/b/ajipurn/bahasa-indonesia-skill)](https://skills.sh/ajipurn/bahasa-indonesia-skill/bahasa-indonesia)
+
 Agent Skill agar coding agent berbicara dalam bahasa Indonesia yang alami dan dapat mengikuti gaya regional pilihan pengguna tanpa mengubah kode atau fakta teknis.
 
 Format skill-nya mengikuti standar Agent Skills: satu `SKILL.md` sebagai router dan referensi yang dibaca hanya saat diperlukan. Sumber kanonis berada di [`skills/bahasa-indonesia`](skills/bahasa-indonesia), jadi paket ini tidak terikat pada Claude Code.
@@ -128,7 +130,7 @@ Jika skill baru belum muncul, mulai sesi agent baru atau restart agent.
 2. Jalankan `npx skills add ajipurn/bahasa-indonesia-skill --skill bahasa-indonesia` dari proyek uji.
 3. Instalasi publik dengan telemetry bawaan membuat skill terdeteksi dan masuk ke direktori skills.sh secara otomatis.
 
-Setelah terindeks, halaman skill tersedia di `https://skills.sh/ajipurn/bahasa-indonesia-skill/bahasa-indonesia`.
+Halaman publiknya tersedia di [skills.sh/ajipurn/bahasa-indonesia-skill/bahasa-indonesia](https://skills.sh/ajipurn/bahasa-indonesia-skill/bahasa-indonesia).
 
 ## Struktur paket
 
