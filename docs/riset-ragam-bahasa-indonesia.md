@@ -21,7 +21,7 @@ Keputusan versi awal:
 
 - Jadikan `netral-profesional` sebagai default.
 - Pisahkan pilihan `baku`, `profesional`, dan `santai` dari pilihan regional.
-- Gunakan `jakarta`, `bandung`, `medan`, dan `makassar` sebagai fondasi yang terdokumentasi langsung; tambahkan profil beta `jaksel`, `surabaya`, `semarang`, `yogyakarta`, `jawa-alus`, dan `banyumasan` setelah riset lanjutan.
+- Gunakan `jakarta`, `bandung`, `medan`, dan `makassar` sebagai fondasi yang terdokumentasi langsung; tambahkan profil beta `jaksel`, `surabaya`, `semarang`, `yogyakarta`, `jawa-alus`, `banyumasan`, dan `kebumen` setelah riset lanjutan.
 - Perlakukan Melayu Ambon, Melayu Manado, Melayu Kupang, dan Melayu Papua sebagai varietas bahasa tersendiri yang hanya aktif jika dipilih secara eksplisit—bukan sebagai satu profil generik “Indonesia Timur”.
 - Jangan merilis profil payung `jawa`, `sunda`, `sumatra`, atau `timur`. Masing-masing menutupi perbedaan internal yang terlalu besar.
 
@@ -174,6 +174,7 @@ Sumber awal:
 - Yogyakarta dan Surakarta berkerabat dekat tetapi bukan satu bentuk identik. [Kajian isolek Yogyakarta–Surakarta](https://eprints.uny.ac.id/4963/1/STATUS_ISOlEK_YOGYAKARTA-SURAKARTA.pdf) mencatat `je` dan `gek` sebagai ciri Yogyakarta.
 - “Jawa alus” adalah tingkat tutur, bukan daerah. Sistem ngoko–madya–krama membawa makna hubungan sosial dan tidak aman disimulasikan lewat substitusi kata sederhana; lihat [Errington](https://doi.org/10.1016/B978-0-12-491280-9.50018-2).
 - “Ngapak” perlu diberi nama kanonis `banyumasan` dan tidak dijadikan suara komedi. Studi identitas [Nugroho dan Kusuma](https://doi.org/10.31315/jik.v21i2.4556) juga menunjukkan pemakaiannya fleksibel menurut mitra dan situasi.
+- Kebumen layak menjadi profil tersendiri ketika pengguna menyebut wilayahnya, tetapi bukan karena seluruh kabupaten membentuk satu dialek yang seragam. [Pujiyatno dan Poedjosoedarmo](https://doi.org/10.30595/lks.v2i1.2252) menggambarkan Kebumen sebagai batas/percampuran dua dialek dan menemukan pengaruh bandek pada leksikon serta tingkat tutur. Penelitian 26 kecamatan oleh [Rahayu dan Munawarah](https://linguistik.fib.ui.ac.id/wp-content/uploads/sites/46/2018/01/202-207-DIA_Ratih-Rahayu-dan-Sri-Munawarah.pdf) menilai ragam Kebumen secara umum sebagai Banyumasan/Ngapak yang dominan, dengan variasi fonologis dan leksikal dari Banyumasan serta Yogyakarta; Prembun disebut daerah transisi. [Purwaningrum](https://doi.org/10.31294/w.v12i2.8096) juga menunjukkan pertukaran leksikon akibat pengaruh Banyumas dan Purworejo serta faktor mitra dan situasi tutur. Implikasi desainnya: default Kebumen condong Banyumasan, kecenderungan timur dapat lebih bandek, dan intensitas `kental` memerlukan subwilayah atau contoh pengguna.
 
 ### Profil yang belum layak menjadi satu tombol
 
@@ -241,7 +242,8 @@ bahasa-indonesia/
         ├── semarang.md
         ├── yogyakarta.md
         ├── jawa-alus.md
-        └── banyumasan.md
+        ├── banyumasan.md
+        └── kebumen.md
 ```
 
 - `SKILL.md`: tujuan, default, cara memilih mode, aturan perlindungan kode, dan router referensi.
@@ -299,6 +301,7 @@ Hindari tes yang hanya mencari keberadaan kata `dong`, `mah`, `bah`, atau `ji`. 
 3. Pilihan gaya dapat diberikan per permintaan maupun disimpan di instruksi proyek seperti `AGENTS.md` atau `CLAUDE.md`.
 4. Intensitas `kental` boleh memperluas code-mixing dan struktur regional dalam prosa, tetapi pergantian bahasa dasar hanya dilakukan jika pengguna memintanya.
 5. Semua profil regional tetap beta, dan `jawa-alus` eksperimental, sampai ada review penutur yang relevan.
-6. Melayu Ambon, Manado, Kupang, dan Papua belum dirilis. Masing-masing akan membutuhkan profil tersendiri, bukan payung “Indonesia Timur”.
+6. `kebumen` dirilis sebagai profil beta tersendiri dengan default condong Banyumasan; subwilayah wajib untuk intensitas `kental` agar kontinum barat–timur tidak dipalsukan.
+7. Melayu Ambon, Manado, Kupang, dan Papua belum dirilis. Masing-masing akan membutuhkan profil tersendiri, bukan payung “Indonesia Timur”.
 
 Default tetap `netral + profesional + repo-natural + tipis`. Pekerjaan berikutnya adalah forward testing dan review penutur, bukan menambah slang.

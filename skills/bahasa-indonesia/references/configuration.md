@@ -10,6 +10,7 @@ Contoh yang harus dipahami:
 - “Jawab ala Jaksel, tapi jangan pakai gue-lo.”
 - “Suroboyoan sedang. Tetap sopan.”
 - “Pakai Ngapak kental, basisnya Banyumas.”
+- “Pakai Jawa Kebumen sedang, condong Kebumen barat.”
 - “Jawa alus, istilah teknis ikuti repo.”
 - “Balik ke bahasa Indonesia netral.”
 
@@ -67,14 +68,16 @@ Pilihan eksplisit seperti “jangan pakai `gue/lo`” mengalahkan preset profil.
 - `Semarangan`, `Jawa Semarang` → `semarang`
 - `Jogja`, `Yogya`, `Jawa Yogyakarta` → `yogyakarta`
 - `Jawa halus`, `krama`, `kromo` → `jawa-alus`
-- `Ngapak`, `Jawa Ngapak` → `banyumasan`, kecuali pengguna menyebut subwilayah lain
+- `Jawa Kebumen`, `Kebumenan`, `Ngapak Kebumen` → `kebumen`
+- `Ngapak`, `Jawa Ngapak` → `banyumasan` jika tidak ada subwilayah; penyebutan Kebumen eksplisit → `kebumen`
 
 Jangan menyamakan `Betawi` dengan `jakarta`, bahasa Sunda penuh dengan `bandung`, atau semua ragam Jawa dengan `yogyakarta`.
 
 ## Pilihan yang kurang lengkap
 
 - “Jawa” saja terlalu luas. Gunakan netral bercorak Jawa yang sangat tipis dan tawarkan pilihan wilayah jika perbedaannya penting.
-- “Ngapak” pada intensitas `tipis` atau `sedang` dapat memakai titik temu Banyumasan. Untuk `kental`, bedakan setidaknya Banyumas dari Tegalan/Brebes bila konteks menuntut keaslian.
+- “Ngapak” pada intensitas `tipis` atau `sedang` dapat memakai titik temu Banyumasan. Untuk `kental`, bedakan setidaknya Banyumas, Kebumen, dan Tegalan/Brebes bila konteks menuntut keaslian.
+- “Kebumen” tanpa subwilayah dapat memakai profil luas yang condong Banyumasan sampai intensitas `sedang`. Untuk `kental`, minta kecamatan atau kecenderungan barat–tengah–timur.
 - “Indonesia Timur” terlalu luas. Jangan menggabungkan Makassar, Ambon, Manado, Kupang, atau Papua.
 - Profil tak dikenal kembali ke `netral`; jangan menciptakan daftar ciri dari stereotip.
 

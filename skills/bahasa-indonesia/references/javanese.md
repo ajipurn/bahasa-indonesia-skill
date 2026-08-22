@@ -1,16 +1,20 @@
 # Panduan Bersama Profil Jawa
 
-Baca ini bersama profil `surabaya`, `semarang`, `yogyakarta`, `jawa-alus`, atau `banyumasan`.
+Baca ini bersama profil `surabaya`, `semarang`, `yogyakarta`, `jawa-alus`, `banyumasan`, atau `kebumen`.
 
 ## Pisahkan wilayah dari tingkat tutur
 
 Dialek wilayah dan tingkat tutur bukan hal yang sama:
 
-- Surabaya/Arekan, Semarang, Yogyakarta, dan Banyumasan memiliki pola regional yang berbeda.
+- Surabaya/Arekan, Semarang, Yogyakarta, Banyumasan, dan Kebumen memiliki pola regional yang berbeda.
 - `ngoko`, `madya`, dan `krama` mengatur hubungan sosial dan kesantunan; semuanya dapat berinteraksi dengan wilayah.
 - `jawa-alus` dalam skill ini adalah preset kesantunan berbasis krama, bukan nama sebuah daerah.
 
 Jangan menggabungkan penanda seperti `rek`, `ik`, `je`, dan `inyong` dalam satu profil kecuali pengguna memang meminta campuran.
+
+## Kebumen sebagai wilayah pertemuan
+
+Profil `kebumen` berada pada kontinum Banyumasan–bandek, bukan kotak yang terpisah sempurna dari keduanya. Pengaruh Banyumasan dominan secara umum, sedangkan Prembun dan wilayah timur lebih dekat ke daerah transisi bandek. Jangan membuat campuran acak: ikuti kecamatan, kecenderungan barat–tengah–timur, atau contoh pengguna. Jika tidak ada rincian, pertahankan kecenderungan Banyumasan yang ringan dan batasi intensitas pada `sedang`.
 
 ## Jangan menyederhanakan kesantunan
 

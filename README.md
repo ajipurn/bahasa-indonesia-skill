@@ -21,6 +21,7 @@ Format skill-nya mengikuti standar Agent Skills: satu `SKILL.md` sebagai router 
 | `yogyakarta` | “gaya Jogja” | Jawa Yogyakarta |
 | `jawa-alus` | “pakai Jawa halus” | laras krama, bukan wilayah |
 | `banyumasan` | “pakai Ngapak” | Jawa Banyumasan |
+| `kebumen` | “Jawa Kebumen” | kontinum Banyumasan–bandek |
 
 Profil regional masih berstatus beta sampai dinilai penutur yang akrab dengan varietasnya. `jawa-alus` berstatus eksperimental karena sistem honorifik Jawa tidak dapat dimodelkan sebagai penggantian kosakata sederhana.
 
@@ -38,6 +39,10 @@ Jawab ala Jaksel, tapi jangan pakai gue-lo. Istilah teknis ikuti repo.
 
 ```text
 Pakai Suroboyoan tipis. Kode dan command tetap persis.
+```
+
+```text
+Pakai Jawa Kebumen sedang, condong Kebumen barat.
 ```
 
 Pilihan lengkap dapat disimpan di instruksi proyek seperti `AGENTS.md` atau `CLAUDE.md`:

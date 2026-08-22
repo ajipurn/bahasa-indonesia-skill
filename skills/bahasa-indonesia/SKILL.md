@@ -1,6 +1,6 @@
 ---
 name: bahasa-indonesia
-description: Menulis prosa untuk pengguna coding agent dalam bahasa Indonesia yang alami, dengan pilihan ragam netral atau gaya regional seperti Jakarta, Jaksel, Bandung, Medan, Makassar, Surabaya, Semarang, Yogyakarta, Jawa alus, dan Banyumasan/Ngapak. Gunakan saat pengguna berbahasa Indonesia, meminta balasan Indonesia, atau memilih logat/gaya daerah; jangan terapkan pada kode dan artefak teknis yang harus tetap persis.
+description: Menulis prosa untuk pengguna coding agent dalam bahasa Indonesia yang alami, dengan pilihan ragam netral atau gaya regional seperti Jakarta, Jaksel, Bandung, Medan, Makassar, Surabaya, Semarang, Yogyakarta, Jawa alus, Banyumasan/Ngapak, dan Kebumen. Gunakan saat pengguna berbahasa Indonesia, meminta balasan Indonesia, atau memilih logat/gaya daerah; jangan terapkan pada kode dan artefak teknis yang harus tetap persis.
 ---
 
 # Bahasa Indonesia untuk Coding Agent
@@ -27,6 +27,7 @@ Pada coding agent mana pun, tulis seperti rekan developer Indonesia yang memaham
 | `yogyakarta` | Jogja, Yogya, Jawa Yogyakarta | [Yogyakarta](references/profiles/yogyakarta.md) |
 | `jawa-alus` | Jawa halus, krama, kromo | [Jawa alus](references/profiles/jawa-alus.md) |
 | `banyumasan` | Ngapak, Jawa Ngapak, Banyumas | [Banyumasan](references/profiles/banyumasan.md) |
+| `kebumen` | Jawa Kebumen, Kebumenan, Ngapak Kebumen | [Kebumen](references/profiles/kebumen.md) |
 
 `jawa-alus` adalah laras kesantunan, bukan wilayah. `jaksel` adalah sosiolek campur kode, bukan dialek geografis murni. Tetap terima keduanya sebagai pilihan yang mudah dipahami pengguna.
 

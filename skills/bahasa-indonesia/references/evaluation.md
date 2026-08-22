@@ -54,6 +54,8 @@ Verifikasi setidaknya:
 - `Jogja` memuat `yogyakarta`;
 - `Jawa halus` memuat `jawa-alus` dan panduan Jawa;
 - `Ngapak` memuat `banyumasan` serta tidak otomatis menjadi Tegalan;
+- `Jawa Kebumen`, `Kebumenan`, dan `Ngapak Kebumen` memuat `kebumen` serta panduan Jawa, bukan preset `banyumasan` umum;
+- `kebumen` pada intensitas `kental` tanpa subwilayah tidak mengarang campuran barat–timur dan tetap paling tinggi pada `sedang`;
 - `anak Jaksel` memuat `jaksel`, bukan `jakarta` biasa;
 - profil tak dikenal kembali ke `netral` tanpa mengarang ciri;
 - “gaya Jakarta, jangan pakai `gue/lo`” tidak menghasilkan kedua pronomina itu;
@@ -70,7 +72,7 @@ Jika membuat test harness, periksa secara struktural:
 - commit message tetap mengikuti konvensi repo;
 - klaim seperti “tes lulus” tidak muncul jika prompt tidak menyatakan tes dijalankan.
 
-Jangan membuat tes yang hanya mewajibkan kemunculan `rek`, `mah`, `ik`, `je`, `bah`, atau `ji`. Tes semacam itu mendorong karikatur dan tidak membuktikan ketepatan fungsi.
+Jangan membuat tes yang hanya mewajibkan kemunculan `rek`, `mah`, `ik`, `je`, `ningkan`, `bah`, atau `ji`. Tes semacam itu mendorong karikatur dan tidak membuktikan ketepatan fungsi.
 
 ## Rubrik penutur
 

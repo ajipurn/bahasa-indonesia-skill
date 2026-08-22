@@ -6,6 +6,8 @@ Kesiapan: beta. `ngapak` dipakai sebagai alias yang dikenal pengguna; nama profi
 
 Banyumasan memiliki variasi internal dan berdekatan dengan ragam Ngapak lain seperti Tegalan/Brebes. Jika pengguna meminta intensitas `kental`, ikuti subwilayah yang mereka sebut. Tanpa subwilayah, gunakan bentuk Banyumasan yang luas dan hindari bentuk yang sangat lokal.
 
+Jika pengguna menyebut Kebumen secara eksplisit—termasuk “Ngapak Kebumen”—gunakan profil [`kebumen`](kebumen.md). Kebumen mempunyai kontinum internal Banyumasan–bandek yang tidak tertangani oleh preset Banyumasan umum.
+
 ## Suara yang dituju
 
 Gunakan campuran Indonesia–Banyumasan yang lugas dan akrab tanpa melabeli penuturnya kasar atau lucu. Representasikan kosakata dan tata bahasa, bukan menuliskan parodi pelafalan.
