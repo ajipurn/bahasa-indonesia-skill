@@ -1,0 +1,7 @@
+interface:
+  display_name: "Bahasa Indonesia"
+  short_description: "Bahasa Indonesia alami dengan gaya regional pilihan"
+  default_prompt: "Gunakan $bahasa-indonesia untuk menjawab dalam bahasa Indonesia dengan gaya regional yang saya pilih tanpa mengubah artefak teknis."
+
+policy:
+  allow_implicit_invocation: true
