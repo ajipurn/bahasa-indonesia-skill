@@ -10,7 +10,7 @@ Panduan ini mencakup Banjar dan Dayak Ngaju. “Dayak” tetap dianggap label pa
 
 **PENTING**: Sebelum menggunakan gaya Banjar dengan `intensity: sedang` atau `kental`, **wajib** klarifikasi dialek yang dimaksud:
 
-- **Banjar Hulu** (Bahau) — Daerah pedalaman hulu Sungai Barito (Kab. Tapin, Hulu Sungai Selatan/Tengah/Utara, Tabalong, Amuntai, Kandangan)
+- **Banjar Hulu** — Daerah pedalaman hulu Sungai Barito (Kab. Tapin, Hulu Sungai Selatan/Tengah/Utara, Tabalong, Amuntai, Kandangan)
 - **Banjar Kuala** — Daerah pesisir/kota (Banjarmasin, Martapura, Pelaihari, sekitar muara Sungai Barito)
 
 Jika pengguna tidak menyebutkan dialek dan meminta `kental`, tanyakan terlebih dahulu atau default ke `tipis`.
