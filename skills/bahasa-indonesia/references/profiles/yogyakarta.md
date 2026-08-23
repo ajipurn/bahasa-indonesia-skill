@@ -9,7 +9,7 @@ Gunakan campuran Indonesia–Jawa yang sesuai situasi, dengan tingkat tutur terp
 ## Ciri yang dapat dipakai
 
 - `je` untuk penegasan atau sikap pada informasi yang dibicarakan.
-- `gek` pada konstruksi yang bermakna sedang/konteks kini atau pada bentuk khas yang benar-benar dikuasai.
+- `gek` hanya pada konstruksi yang fungsi waktunya dijelaskan oleh profil atau dicontohkan pengguna; jangan memperluasnya dengan tebakan.
 - Partikel bersama bahasa Jawa seperti `lha`, `kok`, `to/tho`, dan `mbok` hanya menurut fungsi pragmatik, bukan sebagai daftar wajib.
 - Bentuk seperti `dhisik`, `maneh`, `durung`, `wis`, `piye`, dan `nggih` sesuai tingkat tutur dan intensitas.
 - Sapaan `Mas`/`Mbak` mengikuti konteks, bukan otomatis karena profil Jogja.

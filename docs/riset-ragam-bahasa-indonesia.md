@@ -2,6 +2,8 @@
 
 Tanggal riset: 22 Agustus 2026
 
+Pembaruan implementasi: 23 Agustus 2026
+
 Status: riset awal dan lanjutan sudah diterjemahkan menjadi prototipe V1; profil regional masih menunggu validasi penutur
 
 ## Kesimpulan utama
@@ -24,6 +26,7 @@ Keputusan versi awal:
 - Gunakan `jakarta`, `bandung`, `medan`, dan `makassar` sebagai fondasi yang terdokumentasi langsung; tambahkan profil beta `jaksel`, `surabaya`, `semarang`, `yogyakarta`, `jawa-alus`, `banyumasan`, dan `kebumen` setelah riset lanjutan.
 - Perlakukan Melayu Ambon, Melayu Manado, Melayu Kupang, dan Melayu Papua sebagai varietas bahasa tersendiri yang hanya aktif jika dipilih secara eksplisit—bukan sebagai satu profil generik “Indonesia Timur”.
 - Jangan merilis profil payung `jawa`, `sunda`, `sumatra`, atau `timur`. Masing-masing menutupi perbedaan internal yang terlalu besar.
+- Katalogkan seluruh 718 bahasa resmi untuk pengenalan dan disambiguasi, tetapi pisahkan status katalog dari kemampuan generatif.
 
 ## 1. Istilah yang perlu dibedakan
 
@@ -55,6 +58,8 @@ Keputusan versi awal:
 ### Indonesia sangat multibahasa
 
 Badan Bahasa mencatat [718 bahasa daerah dari 2.560 daerah pengamatan](https://petabahasa.kemendikdasmen.go.id/). Angka itu tidak memasukkan dialek dan subdialek. Konsekuensinya, tidak masuk akal menganggap ada satu cara informal yang mewakili semua penutur bahasa Indonesia.
+
+Registry lokal di [`languages.json`](../skills/bahasa-indonesia/references/languages.json) menyimpan nama, alias, wilayah, provinsi, dan ID sumber untuk semua entri tersebut. Status `catalogued` hanya mengizinkan pengenalan. Empat belas bahasa populer kini memiliki panduan beta dengan batas intensitas; keluaran sedang/kental tetap memerlukan contoh atau evaluasi penutur.
 
 Bahasa daerah juga bukan sekadar sumber kosakata dekoratif. Sebagian penutur memakai bahasa Indonesia sebagai bahasa kedua; sebagian lain tumbuh dengan bahasa Indonesia regional sebagai bahasa pertama. Kontak yang berbeda melahirkan ragam perkotaan yang berbeda pula.
 
@@ -98,7 +103,7 @@ Badan Bahasa sendiri menyediakan [PASTI](https://pasti.kemendikdasmen.go.id/home
 - `indonesia-first`: pakai padanan Indonesia yang mudah dipahami, lalu beri istilah Inggris bila perlu;
 - `english-first`: pertahankan jargon Inggris, dengan kalimat penghubung berbahasa Indonesia.
 
-Nama API, identifier, nama paket, perintah, path, dan pesan error asli tetap tidak boleh diterjemahkan.
+Nama API, identifier, nama paket, perintah, path, dan pesan error asli yang sedang dirujuk tetap tidak boleh diterjemahkan. Artefak yang memang menjadi target tugas boleh diubah sesuai permintaan.
 
 ## 3. Model konfigurasi yang disarankan
 
@@ -106,13 +111,19 @@ Gunakan preset sederhana di depan, tetapi simpan beberapa sumbu di bawahnya.
 
 | Sumbu | Nilai awal yang disarankan | Default |
 |---|---|---|
+| `language` | `indonesia` atau `id` registry | `indonesia` |
+| `variety` | `auto` atau varietas eksplisit | `auto` |
+| `base_language` | alias lama: `indonesia`, `regional` | — |
 | `register` | `baku`, `profesional`, `santai` | `profesional` |
-| `regional_voice` | `netral`, `jakarta`, `bandung`, `medan`, `makassar` | `netral` |
+| `regional_voice` | `netral` atau profil kanonis di `references/regional.md` | `netral` |
 | `intensity` | `tipis`, `sedang`, `kental` | `tipis` |
+| `speech_level` | `auto`, `loma`, `cohag`, `ngoko`, `madya`, `krama` | `auto` |
+| `prose_style` | `lugas`, `puitis` | `lugas` |
+| `poetic_intensity` | `tipis`, `sedang`, `kental` | `tipis` |
 | `technical_terms` | `repo-natural`, `indonesia-first`, `english-first` | `repo-natural` |
 | `self_reference` | `auto` atau bentuk eksplisit | `auto` |
 | `addressee_reference` | `auto`, `omit`, atau bentuk eksplisit | `auto` |
-| `orthography` | `standar`, `percakapan` | mengikuti `register` |
+| `orthography` | `auto`, `standar`, `percakapan` | `auto` |
 
 Contoh permintaan pengguna:
 
@@ -127,7 +138,7 @@ Urutan keputusan:
 2. konfigurasi proyek;
 3. pilihan yang sudah ditegaskan dalam percakapan;
 4. pola bahasa pengguna yang benar-benar terlihat, hanya untuk menyesuaikan tingkat formalitas;
-5. fallback `netral-profesional`.
+5. fallback `netral + profesional + repo-natural + orthography:auto + speech_level:auto + prose_style:lugas`.
 
 Agent boleh menyesuaikan formalitas dari tulisan pengguna. Agent tidak boleh menyimpulkan suku, asal daerah, umur, gender, atau kelas sosial pengguna lalu memilih profil regional tanpa diminta.
 
@@ -181,7 +192,7 @@ Sumber awal:
 - `jawa`: perlu dipecah setidaknya menurut kawasan dan praktik tutur, misalnya Solo–Yogyakarta dan Surabaya/Arekan. Bahasa Jawa sendiri memiliki tingkat tutur, sementara praktik bilingual Jawa–Indonesia tidak memetakan hierarki sosial secara mekanis. Lihat [Goebel tentang percakapan bilingual Jawa–Indonesia](https://doi.org/10.1017/S004740450707037X) dan [Hoogervorst tentang slang Jawa Timur](https://scholarhub.ui.ac.id/wacana/vol15/iss1/7/).
 - `sunda`: untuk versi awal lebih aman memakai label berbasis lokasi `bandung`, karena bahasa Sunda memiliki dialek regional dan tingkat tutur internal. Profil bahasa Sunda penuh berbeda dari bahasa Indonesia bercorak Sunda.
 - `sumatra`, `kalimantan`, dan `indonesia-timur`: wilayah ini terlalu luas dan beragam untuk menjadi satu profil yang bermakna.
-- `minang`, `banjar`, `bali`, `aceh`, `palembang`, dan profil lain: layak ditambah setelah ada korpus, panduan pragmatik, serta penilaian penutur setempat.
+- Aceh, Minangkabau, Lampung, Madura, Bali, Sasak, Bima/Mbojo, Banjar, Dayak Ngaju, Bugis, Makassar, dan Toraja sudah memiliki panduan beta terbatas. Palembang, Batak Toba, Betawi penuh, dan kandidat lain tetap menunggu panduan pragmatik serta penilaian penutur yang memadai.
 
 ## 5. Prinsip keselamatan budaya dan kualitas
 
@@ -190,7 +201,7 @@ Sumber awal:
 3. **Tidak menulis aksen secara fonetis secara default.** Perubahan ejaan untuk meniru bunyi mudah terasa merendahkan dan dapat merusak aksesibilitas.
 4. **Tidak menyamakan kota dengan satu etnis.** Medan bukan sinonim Batak; Jakarta bukan sinonim Betawi; Makassar sebagai kota juga dihuni komunitas yang beragam.
 5. **Kejelasan teknis menang.** Peringatan keamanan, instruksi destruktif, diagnosis, nama simbol, dan data terstruktur tidak boleh menjadi ambigu demi gaya.
-6. **Kode dan artefak exact-match dilindungi.** Jangan mengubah code block, identifier, path, command, pesan error, nama API, atau kutipan pengguna.
+6. **Artefak exact-match yang bukan target tugas dilindungi.** Jangan mengubah code block, identifier, path, command, pesan error, nama API, atau kutipan hanya demi gaya; perubahan yang memang diminta pengguna tetap diperbolehkan.
 7. **Satu profil tidak berarti satu pronomina.** Pengguna boleh memilih gaya Jakarta tanpa `gue/lo`, atau gaya Medan tanpa `aku/kau`.
 8. **Intensitas bukan jumlah slang.** Intensitas lebih baik mengatur seberapa jauh morfologi, partikel, dan susunan kalimat regional dipakai.
 9. **Jangan mencampur varietas tanpa permintaan.** Bentuk Ambon, Manado, Kupang, dan Papua yang mirip tetap memiliki sistem berbeda.
@@ -227,11 +238,25 @@ Gunakan progressive disclosure agar semua profil tidak dimuat pada setiap jawaba
 ```text
 bahasa-indonesia/
 ├── SKILL.md
+├── evals/cases.json
+├── scripts/
+│   ├── evaluate-output.mjs
+│   ├── find-language.mjs
+│   ├── sync-language-registry.mjs
+│   └── validate-skill.mjs
+├── tests/*.test.mjs
 └── references/
     ├── core.md
     ├── configuration.md
     ├── evaluation.md
+    ├── language-selection.md
+    ├── languages.json
+    ├── naturalness.md
+    ├── poetic.md
+    ├── regional.md
+    ├── sundanese.md
     ├── javanese.md
+    ├── languages/*.md
     └── profiles/
         ├── jakarta.md
         ├── jaksel.md
@@ -246,14 +271,21 @@ bahasa-indonesia/
         └── kebumen.md
 ```
 
-- `SKILL.md`: tujuan, default, cara memilih mode, aturan perlindungan kode, dan router referensi.
-- `core.md`: ejaan, kalke, pronomina, istilah teknis, serta perbedaan register yang berlaku lintas profil.
-- `configuration.md`: opsi, default, alias, dan aturan mengganti gaya.
+- `SKILL.md`: tujuan utama, default, batas lingkup, dan context pointer untuk setiap cabang.
+- `core.md`: bahasa Indonesia baik dan benar, batas target tugas, ejaan, kalke, pronomina, istilah teknis, serta register.
+- `configuration.md`: opsi, prioritas, resolusi konflik, alias lintas sumbu, dan aturan mengganti gaya.
+- `language-selection.md` dan `languages.json`: resolusi 718 nama bahasa serta batas kemampuan berdasarkan status.
+- `languages/*.md`: panduan beta bahasa populer yang dikelompokkan per wilayah untuk progressive disclosure.
+- `regional.md`: router tunggal profil, intensitas, makna status beta/eksperimental, dan batas regional.
+- `naturalness.md`: urutan kalibrasi sosial–pragmatik dan aturan akomodasi terhadap contoh pengguna.
+- `poetic.md`: gaya prosa puitis sebagai sumbu terpisah dari profil regional.
+- `sundanese.md`: batas bersama antara variasi wilayah Sunda dan tingkat tutur loma/cohag/hormat.
 - `javanese.md`: batas bersama antara dialek wilayah dan tingkat tutur Jawa.
 - Satu file per profil: ciri yang boleh dipakai, fungsi pragmatik, larangan, contoh teruji, dan sumber.
-- `evaluation.md`: skenario uji serta rubrik penilaian.
+- `evaluation.md`: skenario uji, cara menjalankan harness, serta rubrik penilaian.
+- `evals/`, `scripts/`, dan `tests/`: kasus berbasis invarian, validator tanpa dependensi, evaluator keluaran, dan unit test.
 
-Profil Melayu Ambon, Manado, Kupang, atau Papua baru ditambahkan sebagai referensi terpisah saat benar-benar didukung. Belum ada kebutuhan akan script deterministik pada tahap ini.
+Profil Melayu Ambon, Manado, Kupang, atau Papua baru ditambahkan sebagai referensi terpisah saat benar-benar didukung. Script deterministik hanya memeriksa struktur dan invarian yang dapat diamati; kealamian tetap memerlukan review manusia.
 
 ## 8. Rencana validasi
 
@@ -269,7 +301,7 @@ Uji setiap profil pada jenis tugas yang berbeda:
 - mengajukan pertanyaan klarifikasi;
 - menolak permintaan berbahaya tanpa kehilangan gaya yang wajar.
 
-Untuk setiap tugas, bandingkan `tipis`, `sedang`, dan `kental`. Profil harus mempertahankan fakta, nama simbol, perintah, dan tingkat kepastian yang sama.
+Untuk setiap tugas, bandingkan `tipis`, `sedang`, dan `kental`. Ketika hanya gaya yang berubah, profil harus mempertahankan fakta, artefak terlindungi, tindakan, dan tingkat kepastian yang sama. Tambahkan kasus terpisah yang memang menargetkan perubahan kode agar aturan bahasa tidak membekukan pekerjaan coding.
 
 ### Rubrik manusia
 
@@ -286,8 +318,8 @@ Gunakan lebih dari satu penilai jika memungkinkan. Jangan memberi tahu mereka ka
 
 ### Pemeriksaan otomatis
 
-- Code block dan inline code tidak berubah ketika gaya diganti.
-- Identifier, path, command, URL, nomor versi, dan pesan error tetap identik.
+- Code block dan inline code yang bukan target tugas tidak berubah ketika gaya diganti.
+- Identifier, path, command, URL, nomor versi, dan pesan error terlindungi tetap identik.
 - Profil tidak bocor ke commit message atau konten yang harus mengikuti konvensi repo.
 - Mode tidak memasukkan pronomina/sapaan yang dilarang oleh override pengguna.
 - Profil tak dikenal kembali ke `netral-profesional` tanpa mengarang ciri.
@@ -299,9 +331,14 @@ Hindari tes yang hanya mencari keberadaan kata `dong`, `mah`, `bah`, atau `ji`. 
 1. Isi skill dibuat portabel sebagai Agent Skill dengan sumber kanonis di `skills/bahasa-indonesia`, bukan di direktori milik satu agent.
 2. Distribusi lintas-agent memakai `npx skills add ajipurn/bahasa-indonesia-skill --skill bahasa-indonesia`; CLI menentukan lokasi instalasi Claude Code, Codex, dan agent lain.
 3. Pilihan gaya dapat diberikan per permintaan maupun disimpan di instruksi proyek seperti `AGENTS.md` atau `CLAUDE.md`.
-4. Intensitas `kental` boleh memperluas code-mixing dan struktur regional dalam prosa, tetapi pergantian bahasa dasar hanya dilakukan jika pengguna memintanya.
-5. Semua profil regional tetap beta, dan `jawa-alus` eksperimental, sampai ada review penutur yang relevan.
+4. Intensitas `kental` boleh memperluas code-mixing dan struktur regional dalam prosa, tetapi pergantian `language` hanya dilakukan jika pengguna memintanya.
+5. Semua profil regional tetap beta, dan `jawa-alus` eksperimental, sampai ada review penutur yang relevan. Status kini membatasi intensitas default dan syarat pemakaian `kental`.
 6. `kebumen` dirilis sebagai profil beta tersendiri dengan default condong Banyumasan; subwilayah wajib untuk intensitas `kental` agar kontinum barat–timur tidak dipalsukan.
 7. Melayu Ambon, Manado, Kupang, dan Papua belum dirilis. Masing-masing akan membutuhkan profil tersendiri, bukan payung “Indonesia Timur”.
+8. Kealamian regional dikalibrasi dari relasi sosial dan fungsi pragmatik sebelum kosakata ikonik; koreksi eksplisit pengguna mengalahkan preset umum.
+9. `Sunda loma` dinormalisasi sebagai ragam akrab dan `Sunda cohag` sebagai *kasar pisan*. “Sunda kasar” tanpa penjelas harus diklarifikasi karena istilah `kasar` juga dipakai sebagai nama/payung bagi loma dalam sejumlah klasifikasi; “Jawa kasar” tetap dinormalisasi ke `ngoko`, bukan izin untuk memaki.
+10. `prose_style: puitis` menjadi sumbu pengungkapan terpisah dengan `poetic_intensity`; makna dan kejelasan teknis selalu mengalahkan rima atau hiasan.
+11. Registry 718 bahasa dipakai untuk pengenalan. Entri `catalogued` tidak mengizinkan agent menciptakan tuturan; kemampuan hanya naik melalui panduan dan review penutur.
+12. Dua belas bahasa populer ditambahkan ke Jawa dan Sunda sebagai panduan beta. Default-nya tetap tipis; permintaan sedang/kental memerlukan varietas, contoh, atau review penutur.
 
-Default tetap `netral + profesional + repo-natural + tipis`. Pekerjaan berikutnya adalah forward testing dan review penutur, bukan menambah slang.
+Default tetap `language:indonesia + variety:auto + netral + profesional + repo-natural + orthography:auto + speech_level:auto + prose_style:lugas`. Pekerjaan berikutnya adalah forward testing dan review penutur, bukan menambah slang.

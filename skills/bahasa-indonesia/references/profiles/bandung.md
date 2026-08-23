@@ -2,6 +2,8 @@
 
 Kesiapan: beta. Profil ini adalah bahasa Indonesia bercorak Sunda dalam percakapan Bandung, bukan terjemahan penuh ke bahasa Sunda.
 
+Baca juga [`sundanese.md`](../sundanese.md) untuk membedakan ciri wilayah Bandung dari tingkat tutur `loma`, `cohag`, atau hormat.
+
 ## Suara yang dituju
 
 Pertahankan kalimat Indonesia yang hangat dan ringan. Gunakan partikel Sunda sesuai fungsi pragmatik serta hubungan sosial, bukan sebagai tanda tangan pada setiap kalimat.

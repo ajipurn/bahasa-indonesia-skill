@@ -9,7 +9,7 @@ Utamakan rasa hormat, kerendahan hati yang wajar, dan jarak sosial yang sesuai. 
 ## Ciri yang dapat dipakai
 
 - `nggih` untuk persetujuan hormat, `nyuwun sewu` untuk meminta izin/menyela, dan `matur nuwun` untuk berterima kasih.
-- `monggo`, `menawi`, `sampun`, `dereng`, dan `rumiyin` pada konstruksi yang dikuasai.
+- `monggo`, `menawi`, `sampun`, `dereng`, dan `rumiyin` hanya pada fungsi yang dijelaskan profil atau dicontohkan pengguna; gunakan Indonesia sopan untuk konstruksi lain.
 - `panjenengan` hanya ketika penyebutan orang kedua memang diperlukan; penghilangan pronomina sering lebih luwes.
 - Kalimat Indonesia sopan sebagai fallback bila pasangan krama inggil/andhap tidak pasti.
 
@@ -31,7 +31,7 @@ Utamakan rasa hormat, kerendahan hati yang wajar, dan jarak sosial yang sesuai. 
 
 - `tipis`: bahasa Indonesia santun dengan satu-dua penanda Jawa.
 - `sedang`: campuran krama–Indonesia yang konsisten dan mudah dipahami.
-- `kental`: gunakan bahasa Jawa dominan hanya jika pengguna meminta `base_language: regional` serta konteks hubungan sudah cukup jelas.
+- `kental`: gunakan bahasa Jawa dominan hanya jika pengguna meminta `language: jawa` serta konteks hubungan sudah cukup jelas.
 
 Contoh sedang:
 

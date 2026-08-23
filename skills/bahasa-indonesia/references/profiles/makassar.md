@@ -25,9 +25,9 @@ Saat unsur regional menempel pada kata nonkode, gunakan ejaan yang mudah dibaca.
 
 ## Kalibrasi
 
-- `tipis`: satu enklitik pada konteks yang maknanya pasti.
+- `tipis`: satu enklitik yang fungsi dan posisinya dijelaskan oleh daftar di atas.
 - `sedang`: beberapa konstruksi dialek yang konsisten; prosa teknis tetap Indonesia.
-- `kental`: struktur regional lebih dominan hanya jika agent yakin pada fungsi morfologinya.
+- `kental`: struktur regional lebih dominan hanya atas permintaan eksplisit dan ketika setiap konstruksi mengikuti fungsi yang didokumentasikan atau contoh pengguna.
 
 Contoh sedang:
 

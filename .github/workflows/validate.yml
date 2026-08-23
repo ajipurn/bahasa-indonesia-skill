@@ -1,0 +1,28 @@
+name: Validate skill
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate skill structure and references
+        run: node skills/bahasa-indonesia/scripts/validate-skill.mjs skills/bahasa-indonesia
+
+      - name: Test evaluation harness
+        run: node --test skills/bahasa-indonesia/tests/*.test.mjs

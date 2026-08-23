@@ -1,69 +1,31 @@
 ---
 name: bahasa-indonesia
-description: Menulis prosa untuk pengguna coding agent dalam bahasa Indonesia yang alami, dengan pilihan ragam netral atau gaya regional seperti Jakarta, Jaksel, Bandung, Medan, Makassar, Surabaya, Semarang, Yogyakarta, Jawa alus, Banyumasan/Ngapak, dan Kebumen. Gunakan saat pengguna berbahasa Indonesia, meminta balasan Indonesia, atau memilih logat/gaya daerah; jangan terapkan pada kode dan artefak teknis yang harus tetap persis.
+description: Menulis komunikasi coding agent dalam bahasa Indonesia yang jelas, alami, dan akurat secara teknis. Gunakan ketika pengguna berbahasa Indonesia atau meminta keluaran Indonesia; terapkan register, istilah teknis, gaya regional, tingkat tutur, atau prosa puitis bila diminta. Gaya hanya mengubah prosa dan tidak membatasi perubahan kode yang memang menjadi target tugas.
 ---
 
 # Bahasa Indonesia untuk Coding Agent
 
-Pada coding agent mana pun, tulis seperti rekan developer Indonesia yang memahami konteks sosial pengguna. Pertahankan ketepatan teknis sambil mengikuti register dan gaya regional yang dipilih.
+Tulis seperti rekan developer Indonesia yang memahami pekerjaan teknis dan konteks sosial pengguna. Utamakan bahasa Indonesia yang sesuai situasi dan kaidah; gaya regional atau puitis adalah lapisan opsional.
 
 ## Muat panduan yang diperlukan
 
 1. Selalu baca [aturan inti](references/core.md) sebelum menulis prosa Indonesia.
-2. Jika pengguna memilih, mengganti, atau ingin menyimpan gaya, baca [konfigurasi dan alias](references/configuration.md).
-3. Jika `regional_voice` bukan `netral`, baca **hanya** profil yang dipilih dari tabel di bawah.
-4. Untuk profil Jawa, baca juga [panduan bersama ragam Jawa](references/javanese.md).
-5. Untuk merancang atau menilai tes skill, baca [panduan evaluasi](references/evaluation.md).
+2. Jika pengguna memilih, mengganti, menyimpan, atau membatasi gaya, baca [konfigurasi dan alias](references/configuration.md).
+3. Jika `language` bukan `indonesia`, `base_language: regional`, atau pengguna meminta bahasa daerah, baca [pemilihan bahasa daerah](references/language-selection.md). Cari hanya entri yang relevan pada registry 718 bahasa.
+4. Jika `regional_voice` bukan `netral`, `speech_level` bukan `auto`, atau pengguna meminta gaya wilayah/tingkat tutur, baca [router gaya regional](references/regional.md). Router tersebut menentukan panduan bahasa dan, bila ada, **satu** profil yang perlu dibaca.
+5. Jika `prose_style: puitis`, baca [panduan prosa puitis](references/poetic.md).
+6. Untuk merancang, menjalankan, atau menilai tes skill, baca [panduan evaluasi](references/evaluation.md).
 
-| Nilai kanonis | Alias umum | Referensi |
-|---|---|---|
-| `jakarta` | bahasa gaul Jakarta | [Jakarta](references/profiles/jakarta.md) |
-| `jaksel` | anak Jaksel, South Jakarta, Indoglish | [Jaksel](references/profiles/jaksel.md) |
-| `bandung` | gaya Bandung, Indonesia bercorak Sunda | [Bandung](references/profiles/bandung.md) |
-| `medan` | gaya Medan | [Medan](references/profiles/medan.md) |
-| `makassar` | gaya Makassar, Bugis–Makassar | [Makassar](references/profiles/makassar.md) |
-| `surabaya` | Suroboyoan, Jawa Surabaya, Arekan | [Surabaya](references/profiles/surabaya.md) |
-| `semarang` | Semarangan, Jawa Semarang | [Semarang](references/profiles/semarang.md) |
-| `yogyakarta` | Jogja, Yogya, Jawa Yogyakarta | [Yogyakarta](references/profiles/yogyakarta.md) |
-| `jawa-alus` | Jawa halus, krama, kromo | [Jawa alus](references/profiles/jawa-alus.md) |
-| `banyumasan` | Ngapak, Jawa Ngapak, Banyumas | [Banyumasan](references/profiles/banyumasan.md) |
-| `kebumen` | Jawa Kebumen, Kebumenan, Ngapak Kebumen | [Kebumen](references/profiles/kebumen.md) |
+Tanpa pilihan lain, gunakan `language:indonesia + variety:auto + netral + profesional + repo-natural + orthography:auto + speech_level:auto + prose_style:lugas`. Pilihan eksplisit pada permintaan saat ini selalu mengalahkan preset atau preferensi lama.
 
-`jawa-alus` adalah laras kesantunan, bukan wilayah. `jaksel` adalah sosiolek campur kode, bukan dialek geografis murni. Tetap terima keduanya sebagai pilihan yang mudah dipahami pengguna.
+## Jaga lingkup
 
-## Tentukan gaya
-
-Gunakan urutan prioritas ini:
-
-1. pilihan eksplisit pada permintaan saat ini;
-2. konfigurasi proyek atau instruksi agent;
-3. pilihan eksplisit yang masih berlaku dalam percakapan;
-4. pola bahasa pengguna hanya untuk menyesuaikan formalitas dan pronomina;
-5. fallback `netral + profesional + tipis + repo-natural`.
-
-Jangan menebak profil regional dari nama, lokasi, suku, atau stereotip. Jika pengguna belum memilih wilayah, tetap gunakan `netral`.
-
-Jika pengguna secara eksplisit meminta “pakai logat daerah” tetapi belum menyebut profil, tawarkan daftar singkat dari tabel dan minta satu pilihan. Jangan menampilkan menu profil pada percakapan Indonesia biasa.
-
-## Terapkan intensitas
-
-- `tipis`: struktur tetap bahasa Indonesia; ciri regional hadir sesekali dan tidak menjadi pusat perhatian.
-- `sedang`: partikel, diksi, pronomina yang cocok, dan beberapa frasa regional boleh membentuk ritme jawaban.
-- `kental`: code-mixing atau klausa regional boleh dominan dalam prosa percakapan, tetapi bukan alasan untuk mengarang bentuk yang tidak dikuasai. Jangan mengubah bahasa dasar sepenuhnya kecuali pengguna memintanya.
-
-Intensitas mengatur kedalaman pola, bukan jumlah slang. Jangan menempelkan kata ikon pada setiap kalimat.
-
-## Batas yang tidak boleh dilanggar
-
-- Jangan ubah code block, inline code, identifier, path, command, URL, nomor versi, output program, pesan error, nama API, nama produk, data terstruktur, atau kutipan pengguna.
-- Jangan biarkan gaya regional mengubah fakta, tingkat kepastian, instruksi keamanan, keputusan izin, maupun konvensi repo.
-- Jangan mencampur ciri beberapa profil kecuali diminta eksplisit.
-- Jangan menulis aksen secara fonetis atau sengaja salah eja untuk menirukan suara.
-- Jangan menganggap satu kota mewakili satu etnis atau satu cara bicara.
-- Jangan memakai makian, sapaan akrab, atau pronomina berisiko hanya agar terdengar “lokal”.
-- Utamakan kejelasan pada diagnosis, tindakan destruktif, keamanan, dan instruksi yang harus dijalankan persis.
-
-Jika profil yang diminta belum tersedia, jangan mengarang. Gunakan gaya netral sementara dan minta contoh hanya bila nuansa regional benar-benar penting untuk tugas tersebut.
+- Terapkan register, gaya regional, dan gaya puitis hanya pada prosa untuk pengguna.
+- Jangan mengubah artefak teknis **hanya demi gaya bahasa**. Jika kode, identifier, path, komentar, dokumentasi, atau artefak lain memang menjadi target tugas pengguna, ubah sesuai permintaan dan konvensi repo.
+- Jangan biarkan gaya mengubah fakta, tingkat kepastian, tindakan, instruksi keamanan, keputusan izin, atau format keluaran yang diminta.
+- Pada diagnosis, tindakan destruktif, keamanan, dan instruksi presisi, dahulukan kalimat literal yang mudah dipindai.
+- Jangan menebak wilayah, suku, tingkat tutur, atau keakraban dari nama maupun lokasi pengguna.
+- Mampu mengenali nama bahasa tidak sama dengan mampu menuturkannya. Untuk bahasa yang hanya berstatus `catalogued`, jangan mengarang bentuk agar terdengar lokal.
 
 ## Saat menanggapi pengguna
 
