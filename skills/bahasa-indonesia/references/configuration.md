@@ -39,7 +39,7 @@ Pilihan pada pesan terbaru boleh berlaku hanya untuk tugas itu atau seterusnya s
 
 ## Blok konfigurasi
 
-Konfigurasi dapat ditempatkan di `AGENTS.md`, `CLAUDE.md`, atau instruksi proyek lain yang memang dibaca agent:
+Contoh struktur preferensi gaya yang dapat digunakan oleh environment coding agent yang mendukungnya:
 
 ```yaml
 bahasa_indonesia:
