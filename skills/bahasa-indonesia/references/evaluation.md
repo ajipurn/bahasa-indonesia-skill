@@ -118,6 +118,7 @@ Tambahkan skenario peringatan destruktif. Target, akibat, dan kebutuhan izin har
 | `preserve` | Setiap string wajib muncul persis (peka kapital) di seluruh keluaran, termasuk di dalam code block. Pakai hanya untuk artefak yang memang diminta prompt untuk disebut; pemeriksaan ini tidak membuktikan artefak “tidak berubah”, hanya bahwa bentuk persisnya ada. |
 | `require` | Setiap string wajib muncul, tanpa membedakan kapital. |
 | `first_paragraph_require` | Setiap string wajib muncul pada blok pembuka, tanpa membedakan kapital. Heading awal dilewati; blok pembuka adalah blok pertama sampai paragraf prosa pertama ditambah satu code block, daftar, kutipan, atau tabel yang langsung mengikutinya. |
+| `early_require` (opsional) | Setiap string wajib muncul dalam tiga blok pertama setelah heading dilewati, tanpa membedakan kapital. Pakai untuk catatan fallback atau pertanyaan klarifikasi yang boleh mengikuti isi teknis tetapi tidak boleh terkubur di akhir jawaban. |
 | `forbid_patterns` | Regex dengan flag `iu` tidak boleh cocok pada prosa. Isi fenced code block dan inline code diabaikan agar identifier seperti `lo` atau `beta` tidak terhitung. Pakai pola posisi, misalnya `\bbeta (?:pung|su)\b`, jika kata yang dilarang juga kata Indonesia biasa. |
 
 Invarian berikut hanya terperiksa sejauh sebuah kasus mengodekannya sebagai pola:
@@ -126,6 +127,7 @@ Invarian berikut hanya terperiksa sejauh sebuah kasus mengodekannya sebagai pola
 - penanda profil atau varietas lain tidak bocor → `forbid_patterns` berisi penanda ikonik profil lain;
 - pronomina atau bentuk yang dilarang pengguna tidak muncul → `forbid_patterns`, termasuk varian ejaannya;
 - informasi risiko muncul lebih awal → `first_paragraph_require`;
+- catatan fallback atau pertanyaan klarifikasi tidak terkubur → `early_require`;
 - klaim seperti “tes lulus” tanpa bukti → `forbid_patterns` seperti `\btes(?:nya)? (?:lulus|berhasil)\b` pada kasus yang promptnya tidak menjalankan tes.
 
 Invarian berikut **tidak** dapat diperiksa otomatis dan harus masuk `human_review`: kosakata rekaan untuk bahasa `catalogued`, makian yang melampaui permintaan pada `loma`, `ngoko`, atau `cohag`, perubahan fakta atau tingkat kepastian oleh gaya puitis, kesetiaan commit message pada konvensi repo, data JSON/YAML yang tidak disisipi partikel, dan keaslian regional.
@@ -151,6 +153,19 @@ Untuk forward testing, simpan setiap keluaran agent sebagai `<folder>/<id-kasus>
 Untuk menyegarkan katalog dari Peta Bahasa, jalankan `node scripts/sync-language-registry.mjs`. Tes parser memakai fixture lokal; test suite biasa tidak memerlukan jaringan.
 
 [`evals/cases.json`](../evals/cases.json) menyimpan prompt, substring yang harus dipertahankan, pola yang dilarang, dan kriteria review manusia. Pemeriksaan otomatis sengaja tidak mewajibkan kata daerah atau mencocokkan seluruh jawaban. Tambahkan kasus baru ketika ada invarian atau kegagalan perilaku yang berbeda; jangan membuat fixture hanya untuk satu redaksi keluaran.
+
+Setiap kasus mempunyai `tags` (slug kebab-case) untuk memfilter dengan `--tag`, dan tepat satu dari `prompt` atau `turns`. `turns` adalah riwayat percakapan bergantian `user`/`assistant` yang berakhir pada pesan `user`; runner memberikan seluruh riwayat kepada agent dan hanya balasan terakhir yang dinilai. Pakai `turns` untuk perilaku yang hanya muncul di tengah percakapan, misalnya “balik netral” atau larangan sapaan yang datang belakangan. Agent yang diuji tidak boleh melihat `checks` maupun `human_review`; berikan hanya `prompt` atau `turns`.
+
+## Matriks prompt
+
+`scripts/generate-matrix.mjs` mengubah matriks skenario di atas menjadi kasus yang bisa dijalankan: tujuh skenario × (netral + sebelas profil × tiga intensitas) = 238 kasus di `evals/generated/` (tidak disimpan di git). Setiap kasus memakai fakta dasar yang sama, mempertahankan artefak exact-match, dan melarang penanda ikonik profil lain sehingga kebocoran antarprofil terdeteksi otomatis; bentuk yang dipakai bersama dalam satu rumpun, misalnya `wis` pada profil Jawa, tidak dilarang pada saudaranya. Skenario laporan perubahan juga melarang klaim “tes lulus” karena promptnya menyatakan tes belum dijalankan.
+
+```bash
+node scripts/generate-matrix.mjs [--profiles surabaya,kebumen] [--scenarios bug,destruktif] [--intensities tipis]
+node scripts/evaluate-output.mjs --all <folder-keluaran> --cases evals/generated/cases.json --tag kental
+```
+
+Daftar penanda per profil ada di script itu; perbarui ketika profil baru ditambahkan. Netral melarang semua penanda sekaligus.
 
 ## Rubrik penutur
 

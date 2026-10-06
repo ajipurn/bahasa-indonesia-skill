@@ -13,6 +13,17 @@ export function loadCases(casesPath = defaultCasesPath) {
   return JSON.parse(fs.readFileSync(casesPath, "utf8")).cases;
 }
 
+export function filterByTag(cases, tag) {
+  if (!tag) return cases;
+  return cases.filter((testCase) => (testCase.tags ?? []).includes(tag));
+}
+
+/** Teks prompt untuk runner: kasus satu giliran memakai `prompt`, kasus multi-turn memakai giliran terakhir. */
+export function promptText(testCase) {
+  if (Array.isArray(testCase.turns)) return testCase.turns.at(-1)?.content ?? "";
+  return testCase.prompt ?? "";
+}
+
 function normalizeNewlines(text) {
   return text.replace(/\r\n?/g, "\n");
 }
@@ -86,6 +97,15 @@ export function leadText(output) {
   return lead.map((block) => block.text).join("\n\n");
 }
 
+/** Beberapa blok pertama (heading dilewati); dipakai untuk early_require agar catatan fallback atau pertanyaan tidak terkubur. */
+export function earlyText(output, blockCount = 3) {
+  return splitBlocks(output)
+    .filter((block) => block.type !== "heading")
+    .slice(0, blockCount)
+    .map((block) => block.text)
+    .join("\n\n");
+}
+
 /** Prosa tanpa fenced code block dan inline code; dipakai untuk forbid_patterns. */
 export function stripCode(output) {
   return splitBlocks(output)
@@ -101,6 +121,7 @@ export function evaluateOutput(testCase, output) {
   const raw = normalizeNewlines(output);
   const lowered = raw.toLocaleLowerCase("id");
   const lead = leadText(raw).toLocaleLowerCase("id");
+  const early = earlyText(raw).toLocaleLowerCase("id");
   const prose = stripCode(raw);
 
   for (const value of checks.preserve ?? []) {
@@ -111,6 +132,9 @@ export function evaluateOutput(testCase, output) {
   }
   for (const value of checks.first_paragraph_require ?? []) {
     if (!lead.includes(value.toLocaleLowerCase("id"))) failures.push(`Blok pembuka tidak memuat: ${value}`);
+  }
+  for (const value of checks.early_require ?? []) {
+    if (!early.includes(value.toLocaleLowerCase("id"))) failures.push(`Tiga blok pertama tidak memuat: ${value}`);
   }
   for (const pattern of checks.forbid_patterns ?? []) {
     if (new RegExp(pattern, "iu").test(prose)) failures.push(`Pola terlarang ditemukan: /${pattern}/iu`);
@@ -138,14 +162,14 @@ export function evaluateDirectory(cases, directory) {
 
 function usage() {
   console.error("Pemakaian:");
-  console.error("  node scripts/evaluate-output.mjs <id-kasus> <file-keluaran>");
-  console.error("  node scripts/evaluate-output.mjs --all <folder-keluaran> [--strict]");
-  console.error("  node scripts/evaluate-output.mjs --list");
+  console.error("  node scripts/evaluate-output.mjs <id-kasus> <file-keluaran> [--cases <file>]");
+  console.error("  node scripts/evaluate-output.mjs --all <folder-keluaran> [--strict] [--tag <tag>] [--cases <file>]");
+  console.error("  node scripts/evaluate-output.mjs --list [--tag <tag>] [--cases <file>]");
   process.exit(2);
 }
 
-function runSingle(caseId, outputPath) {
-  const testCase = loadCases().find((candidate) => candidate.id === caseId);
+function runSingle(caseId, outputPath, options) {
+  const testCase = loadCases(options.casesPath).find((candidate) => candidate.id === caseId);
   if (!testCase) {
     console.error(`Kasus tidak ditemukan: ${caseId}`);
     process.exit(2);
@@ -167,14 +191,19 @@ function runSingle(caseId, outputPath) {
   console.log(`Evaluasi otomatis ${caseId} lulus. Lanjutkan dengan ${testCase.human_review.length} kriteria review manusia.`);
 }
 
-function runBatch(directory, strict) {
+function runBatch(directory, options) {
   const resolvedDirectory = path.resolve(directory);
   if (!fs.existsSync(resolvedDirectory) || !fs.statSync(resolvedDirectory).isDirectory()) {
     console.error(`Folder keluaran tidak ditemukan: ${directory}`);
     process.exit(2);
   }
 
-  const results = evaluateDirectory(loadCases(), resolvedDirectory);
+  const cases = filterByTag(loadCases(options.casesPath), options.tag);
+  if (cases.length === 0) {
+    console.error(options.tag ? `Tidak ada kasus dengan tag: ${options.tag}` : "Tidak ada kasus.");
+    process.exit(2);
+  }
+  const results = evaluateDirectory(cases, resolvedDirectory);
   const counts = { pass: 0, fail: 0, missing: 0 };
   for (const result of results) {
     counts[result.status] += 1;
@@ -193,29 +222,48 @@ function runBatch(directory, strict) {
 
   console.log(`\nRingkasan: ${counts.pass} lulus, ${counts.fail} gagal, ${counts.missing} belum ada keluaran dari ${results.length} kasus.`);
   console.log("Keluaran yang lulus tetap memerlukan review manusia sesuai kriteria pada tiap kasus.");
-  if (counts.fail > 0 || (strict && counts.missing > 0)) process.exit(1);
+  if (counts.fail > 0 || (options.strict && counts.missing > 0)) process.exit(1);
 }
 
-function runList() {
-  for (const testCase of loadCases()) {
-    console.log(`${testCase.id}\t${testCase.human_review.length} kriteria review manusia`);
+function runList(options) {
+  for (const testCase of filterByTag(loadCases(options.casesPath), options.tag)) {
+    const turns = Array.isArray(testCase.turns) ? `${testCase.turns.length} giliran` : "1 giliran";
+    const tags = (testCase.tags ?? []).join(",");
+    console.log(`${testCase.id}\t${testCase.human_review.length} kriteria review manusia\t${turns}\t${tags}`);
   }
+}
+
+function optionValue(args, name) {
+  const index = args.indexOf(name);
+  if (index < 0) return undefined;
+  const value = args[index + 1];
+  if (!value || value.startsWith("--")) usage();
+  return value;
 }
 
 function runCli() {
   const args = process.argv.slice(2);
-  if (args.includes("--list")) return runList();
+  const options = {
+    casesPath: optionValue(args, "--cases") ? path.resolve(optionValue(args, "--cases")) : defaultCasesPath,
+    tag: optionValue(args, "--tag"),
+    strict: args.includes("--strict"),
+  };
+  const consumed = new Set(["--cases", "--tag", "--strict", "--all", "--list"]);
+  const positional = args.filter((value, index) => {
+    const previous = args[index - 1];
+    return !consumed.has(value) && !(previous && ["--cases", "--tag", "--all"].includes(previous));
+  });
 
-  const allIndex = args.indexOf("--all");
-  if (allIndex >= 0) {
-    const directory = args[allIndex + 1];
-    if (!directory || directory.startsWith("--")) usage();
-    return runBatch(directory, args.includes("--strict"));
+  if (args.includes("--list")) return runList(options);
+
+  if (args.includes("--all")) {
+    const directory = optionValue(args, "--all");
+    return runBatch(directory, options);
   }
 
-  const [caseId, outputPath] = args;
+  const [caseId, outputPath] = positional;
   if (!caseId || !outputPath) usage();
-  return runSingle(caseId, outputPath);
+  return runSingle(caseId, outputPath, options);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) runCli();

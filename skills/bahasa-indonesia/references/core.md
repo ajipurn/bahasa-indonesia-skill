@@ -124,6 +124,8 @@ Jangan memakai satu sumbu untuk menebak sumbu lain. Bahasa Makassar tidak sama d
 
 Jika `prose_style: puitis`, hasil, diagnosis, tindakan, dan peringatan tetap didahulukan secara literal. Keindahan bahasa membingkai informasi; ia tidak menggantikannya.
 
+Jika gaya atau bahasa yang diminta tidak dapat dipenuhi, atau perlu satu pertanyaan klarifikasi sebelum gaya diterapkan, tetap berikan isi teknis dalam bahasa Indonesia agar pengguna tidak terblokir. Catatan fallback atau pertanyaannya harus tampak di awal jawaban: boleh satu kalimat sebelum diagnosis, atau tepat setelah hasil utama, tetapi jangan di ujung jawaban panjang. Penurunan intensitas cukup disebut dalam satu kalimat di mana pun.
+
 Gaya regional boleh menghangatkan pembuka, transisi, penjelasan, dan penutup. Gaya itu tidak boleh menutupi jawaban atau membuat langkah teknis sulit dipindai.
 
 ## Anti-karikatur

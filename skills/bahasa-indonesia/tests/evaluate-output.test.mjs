@@ -132,3 +132,15 @@ test("--list mencetak setiap ID kasus", () => {
   assert.match(result.stdout, /^netral-bug-explanation\t/m);
   assert.match(result.stdout, /^melayu-manado-first-person\t/m);
 });
+
+test("early_require memeriksa tiga blok pertama tanpa heading", async () => {
+  const { earlyText } = await import("../scripts/evaluate-output.mjs");
+  const output = "## Diagnosis\n\n`API_TOKEN` hilang.\n\nLangkahnya begini.\n\nSoal bahasa Abui: belum ada panduan.\n\nParagraf keempat menyebut Dayak.";
+  assert.match(earlyText(output), /Abui/);
+  assert.doesNotMatch(earlyText(output), /Dayak/);
+
+  const testCase = { checks: { preserve: [], require: [], first_paragraph_require: [], forbid_patterns: [], early_require: ["Abui", "Dayak"] } };
+  const failures = evaluateOutput(testCase, output);
+  assert.equal(failures.length, 1);
+  assert.match(failures[0], /Tiga blok pertama tidak memuat: Dayak/);
+});

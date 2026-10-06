@@ -67,7 +67,16 @@ Untuk forward testing banyak kasus sekaligus, simpan output sebagai `<folder>/<c
 node skills/bahasa-indonesia/scripts/evaluate-output.mjs --all <folder>
 ```
 
-`--list` mencetak semua case ID; `--strict` membuat kasus tanpa output ikut menggagalkan run.
+`--list` mencetak semua case ID; `--strict` membuat kasus tanpa output ikut menggagalkan run; `--tag <tag>` memfilter kasus; `--cases <file>` memakai file kasus lain.
+
+Untuk matriks profil × skenario × intensitas:
+
+```bash
+npm run matrix
+npm run eval -- --all <folder> --cases skills/bahasa-indonesia/evals/generated/cases.json
+```
+
+Hasil forward testing disimpan di `skills/bahasa-indonesia/evals/outputs/<model>/<tanggal>/<case-id>.md`. Folder itu diabaikan validator tetapi boleh di-commit sebagai bukti.
 
 Automated checks hanya dipakai untuk invariant yang bisa diamati, seperti exact-match artifacts, required substrings, forbidden patterns, dan informasi yang harus muncul lebih awal. Naturalness tetap memerlukan human review dengan rubrik di [`references/evaluation.md`](../skills/bahasa-indonesia/references/evaluation.md).
 

@@ -18,7 +18,7 @@ function read(relativePath) {
 }
 
 const ignoredDirectoryNames = new Set(["node_modules", ".git"]);
-const ignoredRelativeDirectories = new Set([path.join("evals", "outputs")]);
+const ignoredRelativeDirectories = new Set([path.join("evals", "outputs"), path.join("evals", "generated")]);
 
 function walk(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -257,11 +257,34 @@ if (evaluationCases) {
     for (const testCase of evaluationCases.cases) {
       if (!testCase.id || ids.has(testCase.id)) errors.push(`ID kasus kosong atau duplikat: ${testCase.id}`);
       ids.add(testCase.id);
-      if (typeof testCase.prompt !== "string" || !testCase.prompt.trim()) {
-        errors.push(`Prompt kasus tidak valid: ${testCase.id}`);
+      const hasPrompt = typeof testCase.prompt === "string" && testCase.prompt.trim().length > 0;
+      const hasTurns = Array.isArray(testCase.turns);
+      if (hasPrompt === hasTurns) {
+        errors.push(`Kasus ${testCase.id} harus memiliki tepat satu dari 'prompt' atau 'turns'.`);
+      }
+      if (hasTurns) {
+        const turns = testCase.turns;
+        if (turns.length < 2) errors.push(`Kasus ${testCase.id}: turns harus berisi minimal 2 giliran.`);
+        turns.forEach((turn, index) => {
+          const expectedRole = index % 2 === 0 ? "user" : "assistant";
+          if (turn?.role !== expectedRole) {
+            errors.push(`Kasus ${testCase.id}: giliran ${index + 1} harus berperan '${expectedRole}'.`);
+          }
+          if (typeof turn?.content !== "string" || !turn.content.trim()) {
+            errors.push(`Kasus ${testCase.id}: giliran ${index + 1} harus memiliki content.`);
+          }
+        });
+        if (turns.at(-1)?.role !== "user") errors.push(`Kasus ${testCase.id}: giliran terakhir harus dari user.`);
+      }
+      if (!Array.isArray(testCase.tags) || testCase.tags.length === 0 ||
+          testCase.tags.some((tag) => typeof tag !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(tag))) {
+        errors.push(`Kasus ${testCase.id}: tags harus array non-kosong berisi slug kebab-case.`);
       }
       for (const key of ["preserve", "require", "forbid_patterns", "first_paragraph_require"]) {
         if (!Array.isArray(testCase.checks?.[key])) errors.push(`checks.${key} harus array: ${testCase.id}`);
+      }
+      if (testCase.checks?.early_require !== undefined && !Array.isArray(testCase.checks.early_require)) {
+        errors.push(`checks.early_require harus array jika ada: ${testCase.id}`);
       }
       if (!Array.isArray(testCase.human_review) || testCase.human_review.length === 0) {
         errors.push(`human_review wajib diisi: ${testCase.id}`);

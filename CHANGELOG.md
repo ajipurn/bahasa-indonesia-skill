@@ -15,7 +15,12 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/). Versi
 - Aturan bahasa jawaban di `core.md`: permintaan eksplisit menang, konfigurasi proyek mengalahkan bahasa pesan, tanpa keduanya ikuti bahasa pengguna. Deskripsi `SKILL.md` kini memuat pemicu berbahasa Inggris.
 - Opsi `artifact_language` (`auto`, `indonesia`, `english`) untuk commit message, deskripsi PR, komentar kode, docstring, dan changelog; gaya regional atau puitis tidak pernah masuk ke artefak ini.
 - Dua kasus evaluasi: prompt Inggris dengan konfigurasi Indonesia, dan commit message berkonvensi dengan penjelasan bergaya regional.
-- `package.json` tanpa dependency dengan script `validate`, `test`, `check`, `eval`, `find-language`, dan `sync-registry`; CI memakai script yang sama.
+- `package.json` tanpa dependency dengan script `validate`, `test`, `check`, `eval`, `find-language`, `sync-registry`, dan `matrix`; CI memakai script yang sama.
+- `tags` pada setiap kasus dan opsi `--tag` serta `--cases` pada evaluator.
+- Kasus multi-turn lewat `turns`; dua kasus baru untuk “balik netral” dan larangan sapaan di tengah percakapan.
+- `scripts/generate-matrix.mjs` menghasilkan 238 kasus profil × skenario × intensitas dengan deteksi kebocoran penanda antarprofil.
+- Forward testing pertama: 19 keluaran `claude-fable-5-1` tersimpan di `evals/outputs/claude-fable-5-1/2026-10-06/` beserta ringkasan; 18 lulus otomatis, 1 temuan perilaku (klarifikasi terkubur).
+- Pemeriksaan `early_require` (tiga blok pertama) untuk catatan fallback dan pertanyaan klarifikasi; aturan penempatannya ditulis di `SKILL.md` dan `core.md`.
 
 ### Diubah
 

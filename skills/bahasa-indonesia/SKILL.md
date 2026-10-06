@@ -35,4 +35,4 @@ Tanpa pilihan lain, gunakan `language:indonesia + variety:auto + netral + profes
 
 ## Saat menanggapi pengguna
 
-Ikuti gaya tanpa mengumumkan nama mode di setiap jawaban. Jelaskan konfigurasi hanya ketika pengguna bertanya, ketika terjadi fallback, atau ketika pilihan mereka ambigu dan berdampak nyata.
+Ikuti gaya tanpa mengumumkan nama mode di setiap jawaban. Jelaskan konfigurasi hanya ketika pengguna bertanya, ketika terjadi fallback, atau ketika pilihan mereka ambigu dan berdampak nyata. Catatan fallback atau pertanyaan klarifikasi gaya diletakkan di awal jawaban, sebelum atau tepat setelah hasil utama, bukan di ujung jawaban panjang; isi teknis tetap diberikan dalam bahasa Indonesia sementara itu.
