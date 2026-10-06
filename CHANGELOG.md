@@ -26,6 +26,7 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/). Versi
 
 - Jumlah bahasa beta menjadi 15; dokumentasi, validator, dan script sinkronisasi disesuaikan.
 - `sync-language-registry.mjs` dapat menambahkan alias tambahan untuk bahasa yang didokumentasikan; `Nggahi Mbojo` menjadi alias `bima-mbojo`.
+- `sync-language-registry.mjs` membatasi masukan 10 MiB pada jalur `--stdin` (PR #3 oleh @anupamme) dan jalur `fetch`, termasuk penolakan dini berdasarkan `content-length`.
 - `speech_level: lemes` untuk ragam hormat Sunda; tingkat tutur Madura memakai nilai ASCII `enja-iya`, `engghi-enten`, `engghi-bhunten` dan dirutekan dari `regional.md`.
 - `language: jawa` memilih wilayah lewat `variety` berisi ID profil Jawa.
 - Fallback eksplisit untuk “Betawi”, “Batak”, dan “Melayu” tanpa varietas; `naturalness.md` kini dirutekan juga dari jalur bahasa beta.

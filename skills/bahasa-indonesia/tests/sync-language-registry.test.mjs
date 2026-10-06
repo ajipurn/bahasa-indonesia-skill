@@ -66,3 +66,44 @@ test("menambahkan alias varietas untuk bahasa yang didokumentasikan", () => {
   assert.deepEqual(melayu.support, { status: "beta", reference: "references/languages/melayu.md" });
   assert.equal("aliases" in melayu.support, false);
 });
+
+test("readBounded berhenti sebelum melampaui batas dan menggabungkan chunk di bawah batas", async () => {
+  const { readBounded } = await import("../scripts/sync-language-registry.mjs");
+  async function* chunks(sizes) {
+    for (const size of sizes) yield Buffer.alloc(size, 0x61);
+  }
+  const small = await readBounded(chunks([3, 4]), "Uji", 10);
+  assert.equal(small.toString(), "aaaaaaa");
+  await assert.rejects(readBounded(chunks([6, 6]), "Uji", 10), /Uji melebihi batas 10 byte\./);
+});
+
+test("downloadRegistry menolak content-length dan body yang melampaui batas, tetapi menerima unduhan kecil", async () => {
+  const { downloadRegistry } = await import("../scripts/sync-language-registry.mjs");
+  const stub = ({ ok = true, status = 200, contentLength, body }) => async () => ({
+    ok,
+    status,
+    headers: new Headers(contentLength === undefined ? {} : { "content-length": String(contentLength) }),
+    body,
+  });
+  const stream = (sizes) => new ReadableStream({
+    start(controller) {
+      for (const size of sizes) controller.enqueue(new Uint8Array(size).fill(0x62));
+      controller.close();
+    },
+  });
+
+  await assert.rejects(
+    downloadRegistry("https://contoh", { fetchImplementation: stub({ contentLength: 11, body: stream([1]) }), limit: 10 }),
+    /content-length 11/,
+  );
+  await assert.rejects(
+    downloadRegistry("https://contoh", { fetchImplementation: stub({ body: stream([6, 6]) }), limit: 10 }),
+    /Unduhan registry melebihi batas 10 byte\./,
+  );
+  await assert.rejects(
+    downloadRegistry("https://contoh", { fetchImplementation: stub({ ok: false, status: 503, body: stream([]) }) }),
+    /HTTP 503/,
+  );
+  const bytes = await downloadRegistry("https://contoh", { fetchImplementation: stub({ contentLength: 7, body: stream([3, 4]) }), limit: 10 });
+  assert.equal(bytes.toString(), "bbbbbbb");
+});

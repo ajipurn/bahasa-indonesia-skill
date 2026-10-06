@@ -127,19 +127,36 @@ export function parseLanguageRegistry(html, { retrievedAt = new Date().toISOStri
   };
 }
 
-const maxStandardInputBytes = 10 * 1024 * 1024; // 10 MiB cap to avoid memory exhaustion
+/** Batas 10 MiB untuk stdin maupun unduhan; halaman sumber nyata sekitar 250 KB. */
+export const maxInputBytes = 10 * 1024 * 1024;
 
-async function readStandardInput() {
+/** Membaca iterable byte (stdin atau body fetch) dan berhenti sebelum melampaui batas. */
+export async function readBounded(source, label, limit = maxInputBytes) {
   const chunks = [];
   let totalBytes = 0;
-  for await (const chunk of process.stdin) {
+  for await (const chunk of source) {
     totalBytes += chunk.length;
-    if (totalBytes > maxStandardInputBytes) {
-      throw new Error(`Input stdin melebihi batas ${maxStandardInputBytes} byte.`);
-    }
+    if (totalBytes > limit) throw new Error(`${label} melebihi batas ${limit} byte.`);
     chunks.push(chunk);
   }
   return Buffer.concat(chunks);
+}
+
+function readStandardInput() {
+  return readBounded(process.stdin, "Input stdin");
+}
+
+export async function downloadRegistry(url = defaultSourceUrl, { fetchImplementation = fetch, limit = maxInputBytes } = {}) {
+  const response = await fetchImplementation(url);
+  if (!response.ok) throw new Error(`Gagal mengunduh registry: HTTP ${response.status}`);
+
+  const declaredLength = Number.parseInt(response.headers?.get?.("content-length") ?? "", 10);
+  if (Number.isInteger(declaredLength) && declaredLength > limit) {
+    throw new Error(`Unduhan registry melebihi batas ${limit} byte (content-length ${declaredLength}).`);
+  }
+  if (!response.body) throw new Error("Unduhan registry tidak memiliki body.");
+
+  return readBounded(response.body, "Unduhan registry", limit);
 }
 
 async function runCli() {
@@ -150,14 +167,7 @@ async function runCli() {
   const outputPath = path.resolve(outputIndex >= 0 ? args[outputIndex + 1] : defaultOutputPath);
   const retrievedAt = dateIndex >= 0 ? args[dateIndex + 1] : new Date().toISOString().slice(0, 10);
 
-  let bytes;
-  if (useStandardInput) {
-    bytes = await readStandardInput();
-  } else {
-    const response = await fetch(defaultSourceUrl);
-    if (!response.ok) throw new Error(`Gagal mengunduh registry: HTTP ${response.status}`);
-    bytes = Buffer.from(await response.arrayBuffer());
-  }
+  const bytes = useStandardInput ? await readStandardInput() : await downloadRegistry();
 
   const html = new TextDecoder("windows-1252").decode(bytes);
   const registry = parseLanguageRegistry(html, { retrievedAt });
