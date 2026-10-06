@@ -127,9 +127,18 @@ export function parseLanguageRegistry(html, { retrievedAt = new Date().toISOStri
   };
 }
 
+const maxStandardInputBytes = 10 * 1024 * 1024; // 10 MiB cap to avoid memory exhaustion
+
 async function readStandardInput() {
   const chunks = [];
-  for await (const chunk of process.stdin) chunks.push(chunk);
+  let totalBytes = 0;
+  for await (const chunk of process.stdin) {
+    totalBytes += chunk.length;
+    if (totalBytes > maxStandardInputBytes) {
+      throw new Error(`Input stdin melebihi batas ${maxStandardInputBytes} byte.`);
+    }
+    chunks.push(chunk);
+  }
   return Buffer.concat(chunks);
 }
 
