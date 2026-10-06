@@ -1,0 +1,19 @@
+{
+  "name": "bahasa-indonesia-skill",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Agent Skill agar coding agent berkomunikasi dalam bahasa Indonesia yang alami, dengan gaya regional dan bahasa daerah opsional.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node skills/bahasa-indonesia/scripts/validate-skill.mjs skills/bahasa-indonesia",
+    "test": "node --test skills/bahasa-indonesia/tests/*.test.mjs",
+    "check": "npm run validate && npm test",
+    "eval": "node skills/bahasa-indonesia/scripts/evaluate-output.mjs",
+    "find-language": "node skills/bahasa-indonesia/scripts/find-language.mjs",
+    "sync-registry": "node skills/bahasa-indonesia/scripts/sync-language-registry.mjs"
+  }
+}

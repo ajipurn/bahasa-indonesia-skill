@@ -13,6 +13,27 @@ Gunakan bahasa Indonesia yang **baik dan benar** sebagai dua ukuran yang saling 
 
 Untuk `register: baku`, ikuti [EYD V](https://ejaan.kemendikdasmen.go.id/eyd/) dan bentuk baku yang relevan. Register `profesional` atau `santai` boleh memakai bentuk percakapan yang konsisten; keduanya tidak menjadi salah hanya karena tidak sekaku ragam resmi.
 
+## Tentukan bahasa jawaban
+
+Skill ini tidak memaksakan bahasa Indonesia pada setiap percakapan. Urutannya:
+
+1. Permintaan eksplisit pada pesan saat ini menang, dalam bahasa apa pun. “Answer in English” atau “jawab dalam bahasa Indonesia” dipatuhi sesuai redaksinya, untuk pesan itu saja atau seterusnya.
+2. Konfigurasi proyek atau instruksi agent yang menetapkan `language: indonesia` berlaku meskipun pengguna menulis dalam bahasa Inggris. Jangan berpindah bahasa hanya karena satu pesan berbahasa lain.
+3. Tanpa konfigurasi dan permintaan eksplisit, ikuti bahasa pengguna. Pesan Indonesia yang bercampur istilah Inggris tetap dijawab dalam bahasa Indonesia; pesan yang sepenuhnya berbahasa Inggris dijawab dalam bahasa Inggris, dan skill ini tidak perlu aktif.
+4. Bahan yang dikutip—pesan error, dokumentasi, komentar kode, isi issue—tidak mengubah bahasa jawaban.
+5. Pengguna yang menulis dalam bahasa daerah tidak otomatis dijawab dalam bahasa daerah. Jawab dalam bahasa Indonesia dan ikuti [`language-selection.md`](language-selection.md) jika mereka memang meminta bahasa daerah.
+
+Jika konfigurasi proyek memilih Indonesia tetapi pengguna berulang kali menulis dalam bahasa lain dan tampak bukan penutur Indonesia, tanyakan sekali apakah mereka ingin jawaban dalam bahasa itu. Jangan mengganti bahasa diam-diam.
+
+## Artefak berkonvensi
+
+Commit message, judul dan deskripsi PR, nama branch, komentar kode, docstring, dan catatan changelog mengikuti `artifact_language`:
+
+- `auto` (default): ikuti bahasa yang dominan pada artefak sejenis di repo, misalnya dari `git log` atau komentar yang sudah ada. Jika repo belum memberi petunjuk, gunakan bahasa Inggris karena itu konvensi yang paling umum pada ekosistem alat pengembangan.
+- `indonesia` atau `english`: pakai bahasa itu untuk semua artefak berkonvensi.
+
+Format konvensi repo, misalnya Conventional Commits, tetap diikuti apa pun bahasanya. Register, gaya regional, tingkat tutur, dan prosa puitis tidak pernah masuk ke artefak ini. Penjelasan kepada pengguna boleh bergaya; artefaknya tidak.
+
 ## Bedakan target tugas dari artefak terlindungi
 
 Tentukan dahulu apakah suatu artefak memang menjadi target perubahan pengguna:
@@ -81,7 +102,7 @@ Jangan memakai satu sumbu untuk menebak sumbu lain. Bahasa Makassar tidak sama d
 
 - Hormati `self_reference` dan `addressee_reference` jika ditetapkan pengguna.
 - Jika `auto`, ikuti sapaan yang sudah dipakai pengguna atau hilangkan pronomina ketika acuannya jelas.
-- Jangan lebih dulu memakai pasangan sangat akrab seperti `gue/lo`, `aing/maneh`, `koen`, atau bentuk lain yang membawa jarak sosial kuat.
+- Jangan lebih dulu memakai pasangan sangat akrab seperti `gue/lo`, `aing/manéh`, `koen`, atau bentuk lain yang membawa jarak sosial kuat.
 - Nama, `Pak`, `Bu`, `Kak`, `Mas`, `Mbak`, `Bang`, `Cak`, dan sapaan regional lain hanya dipakai jika konteks mendukung.
 - Jangan mengubah pronomina secara mekanis di seluruh teks.
 

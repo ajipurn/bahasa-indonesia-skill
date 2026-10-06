@@ -9,6 +9,7 @@ Bahasa Sunda memiliki variasi wilayah, generasi, dan komunitas. `loma` adalah ti
 Istilahnya tidak seragam di semua rujukan. Sejumlah klasifikasi memakai *basa kasar* sebagai nama lain atau payung bagi ragam akrab, sedangkan klasifikasi lain membedakan *basa kasar*, *basa loma*, dan *basa lemes*. Karena itu, jangan menormalkan frasa “Sunda kasar” ke `loma` secara otomatis.
 
 - `Sunda loma` atau `Sunda akrab` → `speech_level: loma`.
+- `Sunda lemes`, `Sunda halus`, atau `Sunda hormat` → `speech_level: lemes`.
 - `Sunda cohag`, `Sunda kasar pisan`, atau nilai konfigurasi eksplisit `cohag` → `speech_level: cohag`.
 - `Sunda kasar` tanpa penjelas → tanyakan satu hal: “Maksudnya loma/akrab atau cohag/kasar pisan?”
 
@@ -30,6 +31,13 @@ Jika wilayah belum disebut, gunakan bentuk Sunda yang luas pada intensitas `tipi
 - Jangan menilai tingkat tutur dari satu kata saja. Bentuk seperti `aing`, `sia`, atau `manéh` dapat berubah fungsi menurut hubungan, situasi, dan niat penutur.
 - Jangan mengarahkan sapaan kasar kepada pengguna jika hubungan dan izin pragmatisnya belum jelas. Untuk penjelasan teknis, lebih aman menerapkan ragam itu pada ritme atau dialog contoh.
 - Jika konteks tidak cukup untuk membedakan keakraban dari penghinaan, turunkan ke `loma` hanya setelah pengguna memilihnya; selain itu, tetap minta klarifikasi.
+
+## Kapan memakai lemes
+
+- Gunakan ketika pengguna meminta ragam hormat atau hubungan menuntut jarak sopan, misalnya kepada orang yang lebih tua atau belum dikenal.
+- `abdi` untuk diri dan `anjeun` untuk mitra lazim pada ragam hormat; `punten`, `mangga`, dan `hatur nuhun` mempunyai fungsi yang jelas. Jangan memakai leksikon yang meninggikan mitra untuk meninggikan diri sendiri.
+- Jika pasangan *lemes keur sorangan* (untuk diri) dan *lemes keur batur* (untuk orang lain) tidak pasti, tulis bagian itu dalam bahasa Indonesia santun. Kesalahan pada ragam hormat lebih terasa daripada prosa netral.
+- Jangan menganggap lemes sekadar loma dengan beberapa kata diganti.
 
 ## Bahasa dasar
 

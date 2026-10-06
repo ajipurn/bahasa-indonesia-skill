@@ -38,7 +38,7 @@ Gunakan campuran Indonesia–Jawa Kebumen yang lugas dan akrab. Buat pengaruh Ba
 
 Contoh sedang, condong Banyumasan:
 
-> Masalahe ana nang `API_TOKEN`; durung kebaca. Cek `.env` disit, bar kuwi jalankan `npm test -- config` maning. Ningkan pesan error-e aja diowahi.
+> Masalahe ana nang `API_TOKEN`; durung kebaca. Cek `.env` disit, bar kuwe jalankan `npm test -- config` maning. Ningkan pesan error-e aja diowahi.
 
 Contoh ini menunjukkan arah campuran, bukan bentuk yang mewakili semua penutur Kebumen.
 

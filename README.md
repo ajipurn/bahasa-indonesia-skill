@@ -63,6 +63,10 @@ Pakai Minangkabau tipis. Jika perlu lebih kental, tanyakan varietasnya.
 ```
 
 ```text
+Pakai Melayu Kupang tipis; kode tetap apa adanya.
+```
+
+```text
 Jelaskan hasil refactor ini dengan prosa puitis tipis.
 ```
 
@@ -72,10 +76,13 @@ Jika ingin mengurangi atau mengganti gaya di tengah percakapan, cukup katakan â€
 
 - **Nada:** baku, profesional, atau santai.
 - **Gaya regional:** Jakarta, Jaksel, Bandung, Medan, Makassar, Surabaya, Semarang, Yogyakarta, Jawa alus, Banyumasan/Ngapak, dan Kebumen.
-- **Bahasa daerah beta:** Jawa, Sunda, Aceh, Minangkabau, Lampung, Madura, Bali, Sasak, Bima/Mbojo, Banjar, Dayak Ngaju, Bugis, Makassar, dan Toraja.
-- **Tingkat tutur:** `loma` atau `cohag` untuk Sunda; `ngoko`, `madya`, atau `krama` untuk Jawa.
+- **Bahasa daerah beta:** Jawa, Sunda, Aceh, Minangkabau, Lampung, Madura, Bali, Sasak, Bima/Mbojo, Banjar, Dayak Ngaju, Bugis, Makassar, Toraja, serta Melayu Ambon, Manado, Kupang, dan Papua.
+- **Tingkat tutur:** `loma`, `lemes`, atau `cohag` untuk Sunda; `ngoko`, `madya`, atau `krama` untuk Jawa; `enja-iya`, `engghi-enten`, atau `engghi-bhunten` untuk Madura.
 - **Intensitas:** tipis, sedang, atau kental.
 - **Gaya prosa:** lugas atau puitis.
+- **Bahasa artefak:** `artifact_language` mengatur commit message, deskripsi PR, dan komentar kode; default-nya mengikuti repo, lalu Inggris.
+
+Jika konfigurasi proyek memilih Indonesia, jawaban tetap Indonesia walau prompt ditulis dalam bahasa Inggris. Tanpa konfigurasi, agent mengikuti bahasa yang kamu pakai.
 
 ## Jadikan default
 
@@ -87,6 +94,12 @@ Gunakan skill `bahasa-indonesia`. Balas dalam bahasa Indonesia santai dan pertah
 
 ## Kontribusi
 
-Profil regional dan 14 bahasa populer masih berstatus beta. Skill ini juga mengenali 718 nama bahasa dari [Peta Bahasa](https://petabahasa.kemendikdasmen.go.id/databahasa.php) tanpa mengarang tuturan yang belum memiliki panduan.
+Profil regional dan 15 bahasa populer masih berstatus beta. Skill ini juga mengenali 718 nama bahasa dari [Peta Bahasa](https://petabahasa.kemendikdasmen.go.id/databahasa.php) tanpa mengarang tuturan yang belum memiliki panduan.
 
-Ingin ikut mengembangkan profil, registry bahasa, atau evaluasi? Lihat [panduan pengembangan](docs/development.md) dan [catatan riset](docs/riset-ragam-bahasa-indonesia.md).
+Status hanya naik setelah ada review penutur yang tercatat di `skills/bahasa-indonesia/evals/reviews/`. Jika kamu penutur salah satu varietas di atas dan ingin menilai keluaran skill, kontribusi itu yang paling dibutuhkan.
+
+Ingin ikut mengembangkan profil, registry bahasa, atau evaluasi? Lihat [panduan pengembangan](docs/development.md), [changelog](CHANGELOG.md), dan [catatan riset](docs/riset-ragam-bahasa-indonesia.md).
+
+## Lisensi
+
+[MIT](LICENSE).

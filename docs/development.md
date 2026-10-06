@@ -10,7 +10,9 @@ Semua file yang ikut didistribusikan ada di `skills/bahasa-indonesia/`:
 skills/bahasa-indonesia/
 ├── SKILL.md
 ├── agents/openai.yaml
-├── evals/cases.json
+├── evals/
+│   ├── cases.json
+│   └── reviews/*.json
 ├── scripts/
 │   ├── validate-skill.mjs
 │   ├── evaluate-output.mjs
@@ -39,9 +41,17 @@ skills/bahasa-indonesia/
 Jalankan dari repo root:
 
 ```bash
+npm run check
+```
+
+Itu setara dengan dua perintah berikut, yang juga dipakai CI:
+
+```bash
 node skills/bahasa-indonesia/scripts/validate-skill.mjs skills/bahasa-indonesia
 node --test skills/bahasa-indonesia/tests/*.test.mjs
 ```
+
+`package.json` tidak punya dependency; script-nya hanya alias (`validate`, `test`, `check`, `eval`, `find-language`, `sync-registry`).
 
 Validator mengecek frontmatter, required reference routing, Markdown fences, local links, language registry, readiness status setiap profile, metadata `agents/openai.yaml`, dan schema `evals/cases.json`.
 
@@ -51,7 +61,19 @@ Untuk mengevaluasi satu agent output terhadap test case:
 node skills/bahasa-indonesia/scripts/evaluate-output.mjs <case-id> <output-file>
 ```
 
+Untuk forward testing banyak kasus sekaligus, simpan output sebagai `<folder>/<case-id>.md` lalu jalankan:
+
+```bash
+node skills/bahasa-indonesia/scripts/evaluate-output.mjs --all <folder>
+```
+
+`--list` mencetak semua case ID; `--strict` membuat kasus tanpa output ikut menggagalkan run.
+
 Automated checks hanya dipakai untuk invariant yang bisa diamati, seperti exact-match artifacts, required substrings, forbidden patterns, dan informasi yang harus muncul lebih awal. Naturalness tetap memerlukan human review dengan rubrik di [`references/evaluation.md`](../skills/bahasa-indonesia/references/evaluation.md).
+
+## Review penutur
+
+Hasil review penutur dicatat sebagai JSON di [`evals/reviews/`](../skills/bahasa-indonesia/evals/reviews/README.md). Validator memeriksa skemanya dan menolak status `stabil` (profil) atau `validated` (bahasa) yang tidak didukung catatan `naik-status`. Jangan mencatat identitas reviewer; cukup hubungan mereka dengan varietas yang dinilai.
 
 GitHub Actions menjalankan validator dan test suite setiap ada push atau pull request.
 
@@ -99,5 +121,7 @@ Public page: [skills.sh/ajipurn/bahasa-indonesia-skill/bahasa-indonesia](https:/
 
 - Landasan desain: [`riset-ragam-bahasa-indonesia.md`](riset-ragam-bahasa-indonesia.md).
 - Evaluation rubric: [`references/evaluation.md`](../skills/bahasa-indonesia/references/evaluation.md).
-- Regional profiles tetap beta sampai human review yang relevan tercatat.
+- Regional profiles tetap beta sampai human review yang relevan tercatat di `evals/reviews/`.
 - `jawa-alus` tetap eksperimental sampai batas tingkat tutur dan penggunaan krama tervalidasi dengan baik.
+- Varietas Melayu (Ambon, Manado, Kupang, Papua) tetap beta dengan default tipis; `kental` memerlukan contoh pengguna atau review penutur.
+- Perubahan yang terlihat pengguna dicatat di [`CHANGELOG.md`](../CHANGELOG.md).

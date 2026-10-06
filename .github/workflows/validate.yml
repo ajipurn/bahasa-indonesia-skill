@@ -22,7 +22,7 @@ jobs:
           node-version: 22
 
       - name: Validate skill structure and references
-        run: node skills/bahasa-indonesia/scripts/validate-skill.mjs skills/bahasa-indonesia
+        run: npm run validate
 
       - name: Test evaluation harness
-        run: node --test skills/bahasa-indonesia/tests/*.test.mjs
+        run: npm test

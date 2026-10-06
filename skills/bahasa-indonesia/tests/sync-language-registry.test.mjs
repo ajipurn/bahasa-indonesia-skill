@@ -21,11 +21,17 @@ const fixture = `
   <td valign=top><strong>Aceh</strong></td>
   <td valign=top><b>Sumatra</b></td>
   <td valign=top><a href="infostatistik.php?idb=1&count=3"><u>Aceh</u></a></td>
+</tr>
+<tr bgcolor=#cccdce valign=top>
+  <td align=center><a name=4></a>4.</td>
+  <td valign=top><strong>Melayu</strong></td>
+  <td valign=top><b>Maluku</b>, <b>Papua</b></td>
+  <td valign=top><a href="infostatistik.php?idb=10&count=4"><u>Maluku</u></a>, <a href="infostatistik.php?idb=10&count=4"><u>Papua</u></a></td>
 </tr>`;
 
 test("mengurai nama, alias, wilayah, provinsi, dan ID sumber", () => {
   const registry = parseLanguageRegistry(fixture, { retrievedAt: "2026-08-23" });
-  assert.equal(registry.language_count, 3);
+  assert.equal(registry.language_count, 4);
   assert.deepEqual(registry.languages[0], {
     index: 1,
     id: "abui-aboa",
@@ -50,4 +56,13 @@ test("memberi status beta hanya pada bahasa yang memiliki panduan", () => {
     status: "beta",
     reference: "references/languages/sumatra.md",
   });
+});
+
+test("menambahkan alias varietas untuk bahasa yang didokumentasikan", () => {
+  const registry = parseLanguageRegistry(fixture);
+  const melayu = registry.languages[3];
+  assert.equal(melayu.id, "melayu");
+  assert.deepEqual(melayu.aliases, ["Melayu Ambon", "Melayu Manado", "Melayu Kupang", "Melayu Papua"]);
+  assert.deepEqual(melayu.support, { status: "beta", reference: "references/languages/melayu.md" });
+  assert.equal("aliases" in melayu.support, false);
 });

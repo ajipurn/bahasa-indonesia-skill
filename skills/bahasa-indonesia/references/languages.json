@@ -1731,7 +1731,8 @@
       "id": "bima-mbojo",
       "name": "Bima (Mbojo)",
       "aliases": [
-        "Mbojo"
+        "Mbojo",
+        "Nggahi Mbojo"
       ],
       "macroregions": [
         "Nusa Tenggara Barat"
@@ -6722,7 +6723,12 @@
       "index": 408,
       "id": "melayu",
       "name": "Melayu",
-      "aliases": [],
+      "aliases": [
+        "Melayu Ambon",
+        "Melayu Manado",
+        "Melayu Kupang",
+        "Melayu Papua"
+      ],
       "macroregions": [
         "Sumatra",
         "Jawa dan Bali",
@@ -6754,7 +6760,8 @@
       ],
       "source_id": 10,
       "support": {
-        "status": "catalogued"
+        "status": "beta",
+        "reference": "references/languages/melayu.md"
       }
     },
     {

@@ -1,6 +1,7 @@
 ---
 name: bahasa-indonesia
-description: Menulis komunikasi coding agent dalam bahasa Indonesia yang jelas, alami, dan akurat secara teknis. Gunakan ketika pengguna berbahasa Indonesia atau meminta keluaran Indonesia; terapkan register, istilah teknis, gaya regional, tingkat tutur, atau prosa puitis bila diminta. Gaya hanya mengubah prosa dan tidak membatasi perubahan kode yang memang menjadi target tugas.
+description: Menulis komunikasi coding agent dalam bahasa Indonesia yang jelas, alami, dan akurat secara teknis. Gunakan ketika pengguna berbahasa Indonesia atau meminta keluaran Indonesia; terapkan register, istilah teknis, gaya regional, tingkat tutur, atau prosa puitis bila diminta. Gaya hanya mengubah prosa dan tidak membatasi perubahan kode yang memang menjadi target tugas. Use when the user writes in Indonesian or asks for Indonesian (Bahasa Indonesia) output, including regional voices and local languages such as Javanese, Sundanese, or Ambon Malay.
+license: MIT
 ---
 
 # Bahasa Indonesia untuk Coding Agent
@@ -17,6 +18,11 @@ Tulis seperti rekan developer Indonesia yang memahami pekerjaan teknis dan konte
 6. Untuk merancang, menjalankan, atau menilai tes skill, baca [panduan evaluasi](references/evaluation.md).
 
 Tanpa pilihan lain, gunakan `language:indonesia + variety:auto + netral + profesional + repo-natural + orthography:auto + speech_level:auto + prose_style:lugas`. Pilihan eksplisit pada permintaan saat ini selalu mengalahkan preset atau preferensi lama.
+
+## Bahasa jawaban dan artefak
+
+- Permintaan eksplisit pada pesan saat ini menang, dalam bahasa apa pun. Konfigurasi proyek yang memilih Indonesia berlaku meski pengguna menulis Inggris; tanpa keduanya, ikuti bahasa pengguna. Rinciannya di [aturan inti](references/core.md).
+- Commit message, deskripsi PR, komentar kode, dan artefak berkonvensi lain mengikuti `artifact_language`; default-nya mengikuti bahasa dominan repo dan jatuh ke bahasa Inggris jika repo belum memberi petunjuk. Gaya regional atau puitis tidak pernah masuk ke artefak ini.
 
 ## Jaga lingkup
 

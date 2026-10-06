@@ -2,9 +2,9 @@
 
 Tanggal riset: 22 Agustus 2026
 
-Pembaruan implementasi: 23 Agustus 2026
+Pembaruan implementasi: 6 Oktober 2026
 
-Status: riset awal dan lanjutan sudah diterjemahkan menjadi prototipe V1; profil regional masih menunggu validasi penutur
+Status: riset awal dan lanjutan sudah diterjemahkan menjadi prototipe V1; varietas Melayu Indonesia Timur dirilis sebagai panduan beta; profil regional dan bahasa beta masih menunggu validasi penutur yang kini dapat dicatat di `evals/reviews/`
 
 ## Kesimpulan utama
 
@@ -59,7 +59,7 @@ Keputusan versi awal:
 
 Badan Bahasa mencatat [718 bahasa daerah dari 2.560 daerah pengamatan](https://petabahasa.kemendikdasmen.go.id/). Angka itu tidak memasukkan dialek dan subdialek. Konsekuensinya, tidak masuk akal menganggap ada satu cara informal yang mewakili semua penutur bahasa Indonesia.
 
-Registry lokal di [`languages.json`](../skills/bahasa-indonesia/references/languages.json) menyimpan nama, alias, wilayah, provinsi, dan ID sumber untuk semua entri tersebut. Status `catalogued` hanya mengizinkan pengenalan. Empat belas bahasa populer kini memiliki panduan beta dengan batas intensitas; keluaran sedang/kental tetap memerlukan contoh atau evaluasi penutur.
+Registry lokal di [`languages.json`](../skills/bahasa-indonesia/references/languages.json) menyimpan nama, alias, wilayah, provinsi, dan ID sumber untuk semua entri tersebut. Status `catalogued` hanya mengizinkan pengenalan. Lima belas bahasa dan kelompok varietas populer kini memiliki panduan beta dengan batas intensitas; keluaran sedang/kental tetap memerlukan contoh atau evaluasi penutur.
 
 Bahasa daerah juga bukan sekadar sumber kosakata dekoratif. Sebagian penutur memakai bahasa Indonesia sebagai bahasa kedua; sebagian lain tumbuh dengan bahasa Indonesia regional sebagai bahasa pertama. Kontak yang berbeda melahirkan ragam perkotaan yang berbeda pula.
 
@@ -162,6 +162,8 @@ Sumber profil:
 - Makassar: [Muhammad Ali Imran, tesis tentang `-mi`, `-ji`, dan `-pi`](https://etd.repository.ugm.ac.id/penelitian/detail/79172).
 
 ### Profil eksplisit lanjutan
+
+Keempat varietas di bawah kini dirilis sebagai `language: melayu` dengan `variety: ambon|manado|kupang|papua` dalam panduan beta [`languages/melayu.md`](../skills/bahasa-indonesia/references/languages/melayu.md). Pilihan desainnya: varietas wajib eksplisit, tidak ada `regional_voice` untuk keempatnya, default tipis, dan tabel bentuk inti yang menegaskan perbedaan pronomina, negasi, aspek, serta posesif antarvarietas. Tabel berikut mempertahankan catatan desain awal.
 
 | Profil | Status yang tepat | Ciri penting | Catatan desain |
 |---|---|---|---|
@@ -285,7 +287,7 @@ bahasa-indonesia/
 - `evaluation.md`: skenario uji, cara menjalankan harness, serta rubrik penilaian.
 - `evals/`, `scripts/`, dan `tests/`: kasus berbasis invarian, validator tanpa dependensi, evaluator keluaran, dan unit test.
 
-Profil Melayu Ambon, Manado, Kupang, atau Papua baru ditambahkan sebagai referensi terpisah saat benar-benar didukung. Script deterministik hanya memeriksa struktur dan invarian yang dapat diamati; kealamian tetap memerlukan review manusia.
+Melayu Ambon, Manado, Kupang, dan Papua kini ditangani oleh `languages/melayu.md` sebagai varietas di bawah `language: melayu`. Catatan review penutur disimpan di `evals/reviews/` dan menjadi gerbang validator untuk status `stabil`/`validated`. Script deterministik hanya memeriksa struktur dan invarian yang dapat diamati; kealamian tetap memerlukan review manusia.
 
 ## 8. Rencana validasi
 
@@ -334,11 +336,13 @@ Hindari tes yang hanya mencari keberadaan kata `dong`, `mah`, `bah`, atau `ji`. 
 4. Intensitas `kental` boleh memperluas code-mixing dan struktur regional dalam prosa, tetapi pergantian `language` hanya dilakukan jika pengguna memintanya.
 5. Semua profil regional tetap beta, dan `jawa-alus` eksperimental, sampai ada review penutur yang relevan. Status kini membatasi intensitas default dan syarat pemakaian `kental`.
 6. `kebumen` dirilis sebagai profil beta tersendiri dengan default condong Banyumasan; subwilayah wajib untuk intensitas `kental` agar kontinum barat–timur tidak dipalsukan.
-7. Melayu Ambon, Manado, Kupang, dan Papua belum dirilis. Masing-masing akan membutuhkan profil tersendiri, bukan payung “Indonesia Timur”.
+7. Melayu Ambon, Manado, Kupang, dan Papua dirilis sebagai varietas wajib-eksplisit di bawah `language: melayu`, bukan payung “Indonesia Timur” dan bukan `regional_voice`. Varietas Melayu lain yang tercakup entri registry tetap berperilaku `catalogued`.
 8. Kealamian regional dikalibrasi dari relasi sosial dan fungsi pragmatik sebelum kosakata ikonik; koreksi eksplisit pengguna mengalahkan preset umum.
 9. `Sunda loma` dinormalisasi sebagai ragam akrab dan `Sunda cohag` sebagai *kasar pisan*. “Sunda kasar” tanpa penjelas harus diklarifikasi karena istilah `kasar` juga dipakai sebagai nama/payung bagi loma dalam sejumlah klasifikasi; “Jawa kasar” tetap dinormalisasi ke `ngoko`, bukan izin untuk memaki.
 10. `prose_style: puitis` menjadi sumbu pengungkapan terpisah dengan `poetic_intensity`; makna dan kejelasan teknis selalu mengalahkan rima atau hiasan.
 11. Registry 718 bahasa dipakai untuk pengenalan. Entri `catalogued` tidak mengizinkan agent menciptakan tuturan; kemampuan hanya naik melalui panduan dan review penutur.
 12. Dua belas bahasa populer ditambahkan ke Jawa dan Sunda sebagai panduan beta. Default-nya tetap tipis; permintaan sedang/kental memerlukan varietas, contoh, atau review penutur.
+13. Review penutur dicatat sebagai JSON terstruktur di `evals/reviews/` dengan subjek, intensitas, ID kasus, jumlah dan hubungan reviewer, skor enam dimensi, serta keputusan. Validator menolak kenaikan status tanpa catatan `naik-status`.
+14. Harness evaluasi mendukung forward testing batch (`evaluate-output.mjs --all <folder>`) agar satu run model dapat dinilai terhadap seluruh kasus sekaligus sebelum review manusia.
 
 Default tetap `language:indonesia + variety:auto + netral + profesional + repo-natural + orthography:auto + speech_level:auto + prose_style:lugas`. Pekerjaan berikutnya adalah forward testing dan review penutur, bukan menambah slang.

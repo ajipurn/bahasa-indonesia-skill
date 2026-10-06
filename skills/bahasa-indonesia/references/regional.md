@@ -2,7 +2,7 @@
 
 Baca ini hanya ketika pengguna memilih logat, gaya wilayah, sosiolek, atau tingkat tutur daerah. Selalu baca [`naturalness.md`](naturalness.md), lalu muat **satu** profil wilayah dari tabel jika `regional_voice` bukan `netral`.
 
-Tabel ini bukan katalog bahasa daerah. Gunakan [`language-selection.md`](language-selection.md) untuk memilih bahasa utama. `medan` tidak berarti bahasa Batak, `makassar` tidak berarti bahasa Makassar atau Bugis, dan `bandung` tidak berarti bahasa Sunda penuh.
+Tabel ini bukan katalog bahasa daerah. Gunakan [`language-selection.md`](language-selection.md) untuk memilih bahasa utama. `medan` tidak berarti bahasa Batak, `makassar` tidak berarti bahasa Makassar atau Bugis, dan `bandung` tidak berarti bahasa Sunda penuh. Tidak ada profil `ambon`, `manado`, `kupang`, atau `papua`; permintaan seperti “logat Ambon” ditawarkan sebagai `language: melayu` + `variety` melalui `language-selection.md`, bukan sebagai gaya regional rekaan.
 
 ## Normalisasi profil
 
@@ -27,8 +27,10 @@ Jika profil tidak dikenal, kembali ke `netral`. Jangan menciptakan ciri dari ste
 ## Muat panduan bahasa
 
 - Untuk `surabaya`, `semarang`, `yogyakarta`, `jawa-alus`, `banyumasan`, `kebumen`, atau `speech_level: ngoko|madya|krama`, baca [`javanese.md`](javanese.md).
-- Untuk `bandung`, permintaan Sunda, atau `speech_level: loma|cohag`, baca [`sundanese.md`](sundanese.md).
-- Jangan menerapkan `loma|cohag` pada profil Jawa atau `ngoko|madya|krama` pada profil Sunda. Jika dua pilihan eksplisit bertentangan, jangan mencampurnya; ikuti aturan konflik di [`configuration.md`](configuration.md).
+- Untuk `bandung`, permintaan Sunda, atau `speech_level: loma|lemes|cohag`, baca [`sundanese.md`](sundanese.md).
+- Untuk `speech_level: enja-iya|engghi-enten|engghi-bhunten` atau permintaan tingkat tutur Madura, baca [`languages/java-bali-nusa-tenggara.md`](languages/java-bali-nusa-tenggara.md). Tidak ada profil regional Madura; tingkat tutur itu berlaku bersama `language: madura` atau pada prosa Indonesia tanpa `regional_voice`.
+- Jika `language: jawa`, wilayah dipilih lewat `variety` yang memakai ID profil Jawa (`surabaya`, `semarang`, `yogyakarta`, `banyumasan`, `kebumen`); muat profil yang sama dari tabel di atas. `regional_voice` tidak perlu diisi dan, jika berbeda dari `variety`, abaikan `regional_voice`.
+- Jangan menerapkan tingkat tutur satu bahasa pada profil bahasa lain, misalnya `loma|lemes|cohag` pada profil Jawa atau `ngoko|madya|krama` pada profil Sunda. Jika dua pilihan eksplisit bertentangan, jangan mencampurnya; ikuti aturan konflik di [`configuration.md`](configuration.md).
 
 ## Terapkan intensitas
 

@@ -9,7 +9,7 @@ Selesaikan setiap opsi secara terpisah dengan urutan berikut:
 1. pilihan eksplisit pada permintaan saat ini;
 2. konfigurasi proyek atau instruksi agent;
 3. pilihan eksplisit yang masih berlaku dalam percakapan;
-4. pola bahasa pengguna hanya untuk menyesuaikan formalitas dan pronomina;
+4. pola bahasa pengguna, untuk menyesuaikan formalitas dan pronomina serta, tanpa konfigurasi, untuk menentukan bahasa jawaban;
 5. nilai default.
 
 Larangan eksplisit seperti “jangan pakai `gue/lo`” mengalahkan preset pada tingkat prioritas yang sama. Jika satu nilai tidak dikenal, abaikan **hanya opsi itu** dan gunakan nilai valid berikutnya; jangan membuang seluruh konfigurasi.
@@ -29,11 +29,15 @@ Contoh yang harus dipahami:
 - “Jawa kasar gaya Surabaya, untuk ngobrol antarteman.”
 - “Pakai Minangkabau tipis; kalau perlu lebih kental, tanya varietasnya.”
 - “Jelaskan dalam Banjar Kuala sedang. Istilah teknis tetap Indonesia.”
+- “Pakai Melayu Kupang tipis; kode tetap apa adanya.”
+- “Jelaskan dalam Melayu Manado tipis.”
 - “Pakai Madura engghi-bhunten, jangan menebak tingkat tutur.”
 - “Jelaskan dalam bahasa Abui. Kalau profilnya belum tersedia, jangan mengarang.”
 - “Jelaskan dengan bahasa Indonesia puitis, tipis saja.”
 - “Gaya Bandung tipis, puitis sedang.”
 - “Balik ke bahasa Indonesia netral.”
+- “Commit message pakai bahasa Indonesia, penjelasannya tetap santai.”
+- “Answer in English for this one.”
 
 Pilihan pada pesan terbaru boleh berlaku hanya untuk tugas itu atau seterusnya sesuai redaksi pengguna. Jangan menganggap “coba gaya Semarang untuk contoh ini” sebagai preferensi permanen.
 
@@ -55,6 +59,7 @@ bahasa_indonesia:
   self_reference: auto
   addressee_reference: auto
   orthography: percakapan
+  artifact_language: auto
 ```
 
 Nilai default:
@@ -73,6 +78,7 @@ bahasa_indonesia:
   self_reference: auto
   addressee_reference: auto
   orthography: auto
+  artifact_language: auto
 ```
 
 ## Makna opsi
@@ -80,24 +86,25 @@ bahasa_indonesia:
 | Opsi | Nilai | Catatan |
 |---|---|---|
 | `language` | `indonesia` atau `id` dari `languages.json` | Bahasa utama keluaran. Status `catalogued` hanya mengaktifkan pengenalan, bukan kefasihan. |
-| `variety` | `auto` atau varietas eksplisit | Dialek/subdialek tidak ditebak dari provinsi atau identitas pengguna. |
+| `variety` | `auto` atau varietas eksplisit | Dialek/subdialek tidak ditebak dari provinsi atau identitas pengguna. Untuk `language: melayu`, wajib `ambon`, `manado`, `kupang`, atau `papua`. Untuk `language: jawa`, memakai ID profil Jawa seperti `surabaya` atau `kebumen`. |
 | `base_language` | `indonesia`, `regional` | Alias kompatibilitas lama. `regional` memerlukan `language` eksplisit. |
 | `regional_voice` | profil kanonis di `regional.md` | `netral` tidak memuat penanda wilayah. |
 | `register` | `baku`, `profesional`, `santai` | Tidak identik dengan intensitas regional. |
 | `intensity` | `tipis`, `sedang`, `kental` | Mengatur kedalaman pola, bukan kuota slang. |
-| `speech_level` | `auto` atau tingkat tutur dalam panduan bahasa | Contoh: Sunda `loma/cohag`, Jawa `ngoko/madya/krama`, Madura `enja-iya/engghi-enten/engghi-bhunten`; bukan izin menghina. |
+| `speech_level` | `auto` atau tingkat tutur dalam panduan bahasa | Contoh: Sunda `loma/lemes/cohag`, Jawa `ngoko/madya/krama`, Madura `enja-iya/engghi-enten/engghi-bhunten` (nilai ASCII; panduan Madura menuliskan bentuk berdiakritiknya); bukan izin menghina. |
 | `prose_style` | `lugas`, `puitis` | Mengatur cara pengungkapan, terpisah dari profil regional. |
 | `poetic_intensity` | `tipis`, `sedang`, `kental` | Hanya berlaku saat `prose_style: puitis`. |
 | `technical_terms` | `repo-natural`, `indonesia-first`, `english-first` | Nama resmi dan artefak exact-match tetap dilindungi. |
 | `self_reference` | `auto` atau bentuk eksplisit | Contoh: `saya`, `aku`, `gue`, `omit`. |
 | `addressee_reference` | `auto` atau bentuk eksplisit | Contoh: `kamu`, `Anda`, `sampeyan`, `omit`. |
 | `orthography` | `auto`, `standar`, `percakapan` | Tidak pernah mengubah artefak teknis. |
+| `artifact_language` | `auto`, `indonesia`, `english` | Bahasa commit message, deskripsi PR, komentar kode, docstring, dan changelog. `auto` mengikuti repo, lalu jatuh ke Inggris. Lihat “Artefak berkonvensi” di [`core.md`](core.md). |
 
 `omit` berarti menghindari pronomina eksplisit ketika acuan sudah jelas; jangan pernah menulis kata `omit` pada keluaran. `auto` mengikuti bentuk yang sudah dipakai pengguna atau menghilangkan pronomina jika pilihan sosialnya belum aman.
 
 Gunakan [`language-selection.md`](language-selection.md) untuk mencocokkan `language` dan memeriksa status kemampuannya. `regional_voice` hanya memodifikasi prosa bahasa Indonesia; ia tidak mengganti `language`.
 
-`loma` dan `cohag` dipakai untuk ragam Sunda, sedangkan `ngoko`, `madya`, dan `krama` dipakai untuk ragam Jawa. Madura memakai klasifikasi dalam panduan Madura; bahasa lain tidak mewarisi label tersebut secara otomatis. Jangan menerapkan tingkat tutur secara lintas bahasa. `jawa-alus` tetap diterima sebagai preset lama yang menyiratkan `speech_level: krama`.
+`loma`, `lemes`, dan `cohag` dipakai untuk ragam Sunda, sedangkan `ngoko`, `madya`, dan `krama` dipakai untuk ragam Jawa. Madura memakai klasifikasi dalam panduan Madura; bahasa lain tidak mewarisi label tersebut secara otomatis. Jangan menerapkan tingkat tutur secara lintas bahasa. `jawa-alus` tetap diterima sebagai preset lama yang menyiratkan `speech_level: krama`.
 
 ## Kombinasi dan konflik
 
@@ -106,7 +113,7 @@ Gunakan [`language-selection.md`](language-selection.md) untuk mencocokkan `lang
 - `base_language: regional` tidak boleh disimpulkan dari `intensity: kental`. Perlakukan sebagai permintaan `language` daerah yang belum lengkap; minta nama bahasa jika keluaran bahasa daerah benar-benar dibutuhkan.
 - Jika `language` berstatus `catalogued`, jangan menaikkan kemampuan melalui `intensity`, `variety`, atau `regional_voice`. Minta contoh pengguna atau tawarkan bahasa Indonesia.
 - Jika `language` dan `regional_voice` berasal dari konteks berbeda—misalnya `language: aceh` dengan `regional_voice: medan`—jangan mencampurnya tanpa permintaan eksplisit.
-- Jika `speech_level` tidak cocok dengan keluarga bahasa profil—misalnya `bandung + ngoko` atau `surabaya + loma|cohag`—jangan mencampurnya. Bila keduanya diminta eksplisit dan memengaruhi hasil, ajukan satu pertanyaan singkat; selain itu, pertahankan `regional_voice` dan gunakan `speech_level: auto`.
+- Jika `speech_level` tidak cocok dengan keluarga bahasa profil—misalnya `bandung + ngoko`, `surabaya + loma|lemes|cohag`, atau tingkat tutur Madura pada profil Jawa/Sunda—jangan mencampurnya. Bila keduanya diminta eksplisit dan memengaruhi hasil, ajukan satu pertanyaan singkat; selain itu, pertahankan `regional_voice` dan gunakan `speech_level: auto`.
 - “kurangi” atau “lebih kental” mengubah sumbu yang terakhir dibicarakan. Jika gaya regional dan puitis sama-sama aktif serta acuannya tidak jelas, minta pengguna menyebut `intensity` atau `poetic_intensity`.
 
 ## Normalisasi alias
@@ -117,8 +124,15 @@ Gunakan [`language-selection.md`](language-selection.md) untuk mencocokkan `lang
 - `Sunda loma`, `Sunda akrab` → `speech_level: loma`.
 - `Sunda cohag`, `Sunda kasar pisan`, atau pilihan eksplisit `speech_level: cohag` → `speech_level: cohag`; penghinaan langsung tetap memerlukan konteks dan izin yang jelas.
 - `Sunda kasar` tanpa penjelas bersifat ambigu. Tanyakan singkat: “Maksudnya loma/akrab atau cohag/kasar pisan?” Jangan menormalkannya secara otomatis.
+- `Sunda lemes`, `Sunda halus`, `Sunda hormat` → `speech_level: lemes`.
+- `Madura kasar` tanpa penjelas juga ambigu: tanyakan apakah yang dimaksud ragam akrab `enja-iya` atau tuturan yang memang kasar; jangan menormalkannya otomatis.
 - `Jawa kasar`, `Jawa ngoko`, `ngoko` → `speech_level: ngoko`; pilih `regional_voice` Jawa secara terpisah jika disebut.
 - `bahasa puitis`, `bahasa indah`, `prosa liris` → `prose_style: puitis`.
+- `commit message pakai bahasa Indonesia`, `komentar kode dalam bahasa Indonesia` → `artifact_language: indonesia`; sebaliknya `commit tetap Inggris` → `artifact_language: english`.
+- `answer in English`, `jawab dalam bahasa Inggris` → bahasa jawaban Inggris untuk pesan itu atau seterusnya sesuai redaksi; `artifact_language` dan preferensi gaya lain tidak ikut berubah.
+- `Melayu Ambon`, `bahasa Ambon` → `language: melayu`, `variety: ambon`; `Melayu Manado`, `bahasa Manado` → `variety: manado`; `Melayu Kupang`, `bahasa Kupang` → `variety: kupang`; `Melayu Papua` → `variety: papua`.
+- `logat Ambon`, `gaya Manado`, atau sebutan serupa untuk Kupang dan Papua tidak mempunyai `regional_voice`. Tawarkan `language: melayu` + `variety` pada intensitas tipis, atau tetap netral jika pengguna hanya ingin bahasa Indonesia.
+- `bahasa Papua` tetap label payung; hanya `Melayu Papua` yang mengaktifkan `variety: papua`.
 
 Jangan menyamakan `Betawi` dengan `jakarta`, bahasa Sunda penuh dengan `bandung`, atau semua ragam Jawa dengan `yogyakarta`.
 
@@ -128,7 +142,10 @@ Jangan menyamakan `Betawi` dengan `jakarta`, bahasa Sunda penuh dengan `bandung`
 - Label payung seperti “Dayak”, “Batak”, “Papua”, “Melayu”, atau “Indonesia Timur” memerlukan bahasa/varietas yang lebih spesifik ketika pengguna meminta keluaran daerah dominan.
 - “Ngapak” pada intensitas `tipis` atau `sedang` dapat memakai titik temu Banyumasan. Untuk `kental`, bedakan setidaknya Banyumas, Kebumen, dan Tegalan/Brebes bila konteks menuntut keaslian.
 - “Kebumen” tanpa subwilayah dapat memakai profil luas yang condong Banyumasan sampai intensitas `sedang`. Untuk `kental`, minta kecamatan atau kecenderungan barat–tengah–timur.
-- “Indonesia Timur” terlalu luas. Jangan menggabungkan Makassar, Ambon, Manado, Kupang, atau Papua.
+- “Indonesia Timur” terlalu luas. Jangan menggabungkan Makassar, Ambon, Manado, Kupang, atau Papua. Ambon, Manado, Kupang, dan Papua tersedia sebagai varietas `melayu` yang terpisah; minta satu pilihan.
+- “Melayu” tanpa varietas: tawarkan Ambon, Manado, Kupang, atau Papua, satu-satunya varietas yang mempunyai panduan. Varietas Melayu lain hanya dikenali, tidak dituturkan.
+- “Betawi” tidak mempunyai profil maupun entri registry tersendiri. Jangan memakai `jakarta` sebagai pengganti; tawarkan bahasa Indonesia netral atau ikuti contoh pengguna secara terbatas.
+- “Batak” mempunyai satu entri registry `batak` berstatus `catalogued`; Toba, Karo, Simalungun, Mandailing, Angkola, dan Pakpak tidak tercatat terpisah. Tanyakan varietasnya jika keluaran daerah diminta, lalu tetap berperilaku `catalogued` dan jangan memakai `medan` sebagai pengganti.
 - “Sunda kasar” tanpa penjelas tidak cukup untuk memilih `loma` atau `cohag`; klarifikasi tingkat tuturnya. Wilayah tetap sumbu terpisah dan hanya perlu ditanyakan jika keluaran regional sedang/kental memerlukannya.
 - “Jawa kasar” tanpa wilayah berarti ngoko. Untuk `language: jawa` pada intensitas sedang/kental, minta pilihan wilayah Jawa atau ikuti contoh pengguna; jangan membuat campuran Jawa generik.
 - “Puitis” tanpa bentuk khusus berarti prosa puitis tipis. Jangan mengubahnya menjadi sajak berbait.

@@ -17,11 +17,24 @@ function read(relativePath) {
   return fs.readFileSync(absolutePath, "utf8");
 }
 
+const ignoredDirectoryNames = new Set(["node_modules", ".git"]);
+const ignoredRelativeDirectories = new Set([path.join("evals", "outputs")]);
+
 function walk(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const target = path.join(directory, entry.name);
-    return entry.isDirectory() ? walk(target) : [target];
+    if (!entry.isDirectory()) return [target];
+    if (ignoredDirectoryNames.has(entry.name) || ignoredRelativeDirectories.has(path.relative(skillRoot, target))) return [];
+    return walk(target);
   });
+}
+
+function stripFences(text) {
+  return text.replace(/^[ \t]*(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n[ \t]*\1[ \t]*$/gm, "");
+}
+
+function hasHeading(text, heading) {
+  return new RegExp(`^## ${heading}\\s*$`, "m").test(text);
 }
 
 function frontmatterValue(frontmatter, key) {
@@ -83,11 +96,19 @@ for (const file of markdownFiles) {
   const fenceCount = text.split(/\r?\n/).filter((line) => /^\s*(```|~~~)/.test(line)).length;
   if (fenceCount % 2 !== 0) errors.push(`Fence Markdown tidak seimbang: ${relativeFile}`);
 
-  for (const match of text.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
+  for (const match of stripFences(text).matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
     let target = match[1].trim();
-    if (/^(?:https?:|mailto:|#)/.test(target)) continue;
+    const titled = target.match(/^(<[^>]*>|\S+)\s+(?:"[^"]*"|'[^']*'|\([^)]*\))$/);
+    if (titled) target = titled[1];
     if (target.startsWith("<") && target.endsWith(">")) target = target.slice(1, -1);
+    if (/^(?:https?:|mailto:|#)/.test(target)) continue;
     target = target.split("#", 1)[0];
+    try {
+      target = decodeURIComponent(target);
+    } catch {
+      // Biarkan target apa adanya jika bukan URI yang valid.
+    }
+    if (!target) continue;
     const resolvedTarget = path.resolve(path.dirname(file), target);
     if (!fs.existsSync(resolvedTarget)) {
       errors.push(`Tautan lokal rusak: ${relativeFile} -> ${match[1]}`);
@@ -111,8 +132,8 @@ for (const profileFile of profileFiles) {
     errors.push(`Status kesiapan profil tidak valid atau hilang: ${profileFile}`);
   }
   for (const heading of ["Suara yang dituju", "Hindari", "Kalibrasi", "Sumber"]) {
-    if (!profileText.includes(`## ${heading}`)) {
-      errors.push(`Profil ${profileFile} tidak memiliki bagian '${heading}'.`);
+    if (!hasHeading(profileText, heading)) {
+      errors.push(`Profil ${profileFile} tidak memiliki bagian '## ${heading}' pada level dua.`);
     }
   }
 }
@@ -125,8 +146,8 @@ for (const guideFile of languageGuideFiles) {
     errors.push(`Panduan bahasa populer tidak berstatus beta: ${guideFile}`);
   }
   for (const heading of ["Hindari", "Sumber"]) {
-    if (!guideText.includes(`## ${heading}`)) {
-      errors.push(`Panduan ${guideFile} tidak memiliki bagian '${heading}'.`);
+    if (!hasHeading(guideText, heading)) {
+      errors.push(`Panduan ${guideFile} tidak memiliki bagian '## ${heading}' pada level dua.`);
     }
   }
 }
@@ -161,6 +182,7 @@ if (languageRegistry) {
       ["lampung", "references/languages/sumatra.md"],
       ["madura", "references/languages/java-bali-nusa-tenggara.md"],
       ["makassar", "references/languages/sulawesi.md"],
+      ["melayu", "references/languages/melayu.md"],
       ["minangkabau", "references/languages/sumatra.md"],
       ["sasak", "references/languages/java-bali-nusa-tenggara.md"],
       ["sunda", "references/sundanese.md"],
@@ -200,6 +222,13 @@ if (languageRegistry) {
       errors.push(`Registry harus memiliki tepat ${expectedBetaLanguages.size} bahasa beta yang didokumentasikan.`);
     }
     betaLanguageCount = actualBetaLanguages.size;
+
+    const referencedGuides = new Set(languages.map((language) => language.support?.reference).filter(Boolean));
+    for (const guideFile of languageGuideFiles) {
+      if (!referencedGuides.has(`references/languages/${guideFile}`)) {
+        errors.push(`Panduan bahasa tidak dirujuk oleh entri registry mana pun: references/languages/${guideFile}`);
+      }
+    }
   }
 }
 
@@ -248,10 +277,115 @@ if (evaluationCases) {
   }
 }
 
+const reviewDirectory = path.join(skillRoot, "evals", "reviews");
+const reviewFiles = fs.existsSync(reviewDirectory)
+  ? fs.readdirSync(reviewDirectory).filter((file) => file.endsWith(".json")).sort()
+  : [];
+const reviewsBySubject = new Map();
+const scoreDimensions = [
+  "kealamian",
+  "partikel_morfologi",
+  "pronomina_jarak_sosial",
+  "konsistensi_wilayah",
+  "kejelasan_teknis",
+  "bebas_stereotip",
+];
+const knownCaseIds = new Set((evaluationCases?.cases ?? []).map((testCase) => testCase.id));
+const knownProfileIds = new Set(profileFiles.map((file) => file.replace(/\.md$/, "")));
+const knownLanguageIds = new Set((languageRegistry?.languages ?? []).map((language) => language.id));
+
+for (const reviewFile of reviewFiles) {
+  const label = `evals/reviews/${reviewFile}`;
+  let review;
+  try {
+    review = JSON.parse(fs.readFileSync(path.join(reviewDirectory, reviewFile), "utf8"));
+  } catch (error) {
+    errors.push(`${label} bukan JSON valid: ${error.message}`);
+    continue;
+  }
+
+  if (review.schema_version !== 1) errors.push(`${label}: schema_version harus 1.`);
+  const subject = review.subject ?? {};
+  if (subject.kind === "profile") {
+    if (!knownProfileIds.has(subject.id)) errors.push(`${label}: profil '${subject.id}' tidak ditemukan.`);
+  } else if (subject.kind === "language") {
+    if (!knownLanguageIds.has(subject.id)) errors.push(`${label}: bahasa '${subject.id}' tidak ada di registry.`);
+  } else {
+    errors.push(`${label}: subject.kind harus 'profile' atau 'language'.`);
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(review.date ?? "")) errors.push(`${label}: date harus YYYY-MM-DD.`);
+  for (const key of ["skill_commit", "model", "intensity"]) {
+    if (typeof review[key] !== "string" || !review[key].trim()) errors.push(`${label}: ${key} wajib diisi.`);
+  }
+  if (!["tipis", "sedang", "kental"].includes(review.intensity)) {
+    errors.push(`${label}: intensity harus tipis, sedang, atau kental.`);
+  }
+  if (!Array.isArray(review.case_ids) || review.case_ids.length === 0) {
+    errors.push(`${label}: case_ids wajib berisi minimal satu ID kasus.`);
+  } else {
+    for (const caseId of review.case_ids) {
+      if (!knownCaseIds.has(caseId)) errors.push(`${label}: kasus '${caseId}' tidak ada di evals/cases.json.`);
+    }
+  }
+  const reviewerCount = review.reviewers?.count;
+  if (!Number.isInteger(reviewerCount) || reviewerCount < 1) {
+    errors.push(`${label}: reviewers.count harus bilangan bulat minimal 1.`);
+  } else if (review.intensity === "kental" && reviewerCount < 2) {
+    errors.push(`${label}: review intensitas kental memerlukan minimal 2 reviewer.`);
+  }
+  if (typeof review.reviewers?.relationship !== "string" || !review.reviewers.relationship.trim()) {
+    errors.push(`${label}: reviewers.relationship wajib menjelaskan hubungan reviewer dengan varietas.`);
+  }
+  for (const dimension of scoreDimensions) {
+    const score = review.scores?.[dimension];
+    if (!Number.isInteger(score) || score < 1 || score > 5) {
+      errors.push(`${label}: scores.${dimension} harus bilangan bulat 1–5.`);
+    }
+  }
+  if (!Array.isArray(review.recurring_failures)) errors.push(`${label}: recurring_failures harus array.`);
+  if (!["tetap-beta", "naik-status", "turun-status"].includes(review.decision)) {
+    errors.push(`${label}: decision harus tetap-beta, naik-status, atau turun-status.`);
+  }
+  if (review.decision === "naik-status") {
+    if (Number.isInteger(reviewerCount) && reviewerCount < 2) {
+      errors.push(`${label}: naik-status memerlukan minimal 2 reviewer.`);
+    }
+    const lowDimensions = scoreDimensions.filter((dimension) => !(review.scores?.[dimension] >= 4));
+    if (lowDimensions.length > 0) {
+      errors.push(`${label}: naik-status memerlukan skor minimal 4 pada semua dimensi; kurang pada ${lowDimensions.join(", ")}.`);
+    }
+  }
+  if (subject.kind && subject.id) {
+    const key = `${subject.kind}:${subject.id}`;
+    if (!reviewsBySubject.has(key)) reviewsBySubject.set(key, []);
+    reviewsBySubject.get(key).push({ date: review.date ?? "", decision: review.decision });
+  }
+}
+
+const promotions = new Set();
+for (const [key, records] of reviewsBySubject) {
+  records.sort((left, right) => left.date.localeCompare(right.date));
+  if (records.at(-1).decision === "naik-status") promotions.add(key);
+}
+
+for (const profileFile of profileFiles) {
+  const profileText = fs.readFileSync(path.join(profileDirectory, profileFile), "utf8");
+  const profileId = profileFile.replace(/\.md$/, "");
+  if (/^Kesiapan: stabil\./m.test(profileText) && !promotions.has(`profile:${profileId}`)) {
+    errors.push(`Profil ${profileId} berstatus stabil tanpa catatan review 'naik-status' yang masih berlaku di evals/reviews/.`);
+  }
+}
+
+for (const language of languageRegistry?.languages ?? []) {
+  if (language.support?.status === "validated" && !promotions.has(`language:${language.id}`)) {
+    errors.push(`Bahasa ${language.id} berstatus validated tanpa catatan review 'naik-status' yang masih berlaku di evals/reviews/.`);
+  }
+}
+
 if (errors.length > 0) {
   console.error(`Validasi gagal (${errors.length} masalah):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`Validasi lulus: ${path.basename(skillRoot)}, ${languageRegistry.language_count} bahasa terdaftar, ${betaLanguageCount} bahasa beta, ${profileFiles.length} profil regional, ${evaluationCases.cases.length} kasus evaluasi.`);
+console.log(`Validasi lulus: ${path.basename(skillRoot)}, ${languageRegistry.language_count} bahasa terdaftar, ${betaLanguageCount} bahasa beta, ${profileFiles.length} profil regional, ${evaluationCases.cases.length} kasus evaluasi, ${reviewFiles.length} catatan review.`);

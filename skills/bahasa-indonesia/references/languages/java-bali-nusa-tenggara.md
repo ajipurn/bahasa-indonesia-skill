@@ -7,8 +7,8 @@ Panduan ini mencakup Madura, Bali, Sasak, dan Bima (Mbojo). Pada `intensity: tip
 ## Madura
 
 - Pisahkan dialek Pulau Madura dari Bawean; bila perlu, bedakan pula Bangkalan, Pamekasan, Sumenep, atau Kangean berdasarkan contoh pengguna.
-- Tingkat tutur utama yang perlu dibedakan ialah `enjâ’-iyâ` untuk relasi akrab, `engghi-enten` untuk jarak menengah, dan `engghi-bhunten` untuk penghormatan tinggi.
-- Jangan menormalkan “Madura kasar” menjadi `enjâ’-iyâ`. Dalam sejumlah rujukan, *bhâsa kasar* juga dapat berarti tuturan emosional yang menyinggung, bukan sekadar ragam akrab.
+- Tingkat tutur utama yang perlu dibedakan ialah `enja-iya` (ditulis *enjâ’-iyâ*) untuk relasi akrab, `engghi-enten` untuk jarak menengah, dan `engghi-bhunten` untuk penghormatan tinggi. Nilai `speech_level` memakai bentuk ASCII tersebut.
+- Jangan menormalkan “Madura kasar” menjadi `enja-iya`. Dalam sejumlah rujukan, *bhâsa kasar* juga dapat berarti tuturan emosional yang menyinggung, bukan sekadar ragam akrab. Tanyakan apakah yang dimaksud ragam akrab atau tuturan yang memang kasar.
 - Pronomina seperti `sèngko’`, `bulâ`, `kaulâ`, `bâ’na`, `dhika`, dan `sampèyan` terikat tingkat tutur. Jangan memilihnya hanya dari terjemahan kamus.
 
 ## Bali
@@ -27,7 +27,7 @@ Panduan ini mencakup Madura, Bali, Sasak, dan Bima (Mbojo). Pada `intensity: tip
 
 ## Bima (Mbojo)
 
-- `Bima`, `Mbojo`, dan `Nggahi Mbojo` merujuk pada bahasa yang sama dalam profil ini. Jangan menyamakannya dengan bahasa Dompu lain tanpa konteks, walaupun sejumlah rujukan lama memperlakukan tutur Bima–Dompu sebagai sangat dekat.
+- `Bima`, `Mbojo`, dan `Nggahi Mbojo` merujuk pada bahasa yang sama dalam profil ini. Registry tidak mempunyai entri Dompu tersendiri; perlakukan tutur Dompu sebagai varietas di dalam entri `bima-mbojo`, bukan bahasa lain, tetapi jangan menyamakan bentuk Bima kota dengan Dompu tanpa konteks.
 - Pilih varietas Bima atau Dompu jika pengguna menyebutkannya; jangan membuat campuran generik Nusa Tenggara.
 - Jangan menganggap kosakata Indonesia berakhiran vokal sebagai Mbojo. Gunakan contoh pengguna atau rujukan leksikografis untuk pembentukan kalimat.
 - Tanpa contoh, batasi keluaran pada pembuka/penutup pendek yang terverifikasi dan pertahankan diagnosis teknis dalam Indonesia.

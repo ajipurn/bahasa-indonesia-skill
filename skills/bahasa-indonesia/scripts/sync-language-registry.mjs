@@ -13,13 +13,21 @@ const documentedLanguages = new Map([
   ["Aceh", { status: "beta", reference: "references/languages/sumatra.md" }],
   ["Bali", { status: "beta", reference: "references/languages/java-bali-nusa-tenggara.md" }],
   ["Banjar", { status: "beta", reference: "references/languages/kalimantan.md" }],
-  ["Bima (Mbojo)", { status: "beta", reference: "references/languages/java-bali-nusa-tenggara.md" }],
+  ["Bima (Mbojo)", { status: "beta", reference: "references/languages/java-bali-nusa-tenggara.md", aliases: ["Nggahi Mbojo"] }],
   ["Bugis", { status: "beta", reference: "references/languages/sulawesi.md" }],
   ["Dayak Ngaju", { status: "beta", reference: "references/languages/kalimantan.md" }],
   ["Jawa", { status: "beta", reference: "references/javanese.md" }],
   ["Lampung", { status: "beta", reference: "references/languages/sumatra.md" }],
   ["Madura", { status: "beta", reference: "references/languages/java-bali-nusa-tenggara.md" }],
   ["Makassar", { status: "beta", reference: "references/languages/sulawesi.md" }],
+  [
+    "Melayu",
+    {
+      status: "beta",
+      reference: "references/languages/melayu.md",
+      aliases: ["Melayu Ambon", "Melayu Manado", "Melayu Kupang", "Melayu Papua"],
+    },
+  ],
   ["Minangkabau", { status: "beta", reference: "references/languages/sumatra.md" }],
   ["Sasak", { status: "beta", reference: "references/languages/java-bali-nusa-tenggara.md" }],
   ["Sunda", { status: "beta", reference: "references/sundanese.md" }],
@@ -85,15 +93,17 @@ export function parseLanguageRegistry(html, { retrievedAt = new Date().toISOStri
     const id = usedIds.has(baseId) ? `${baseId}-${sourceId}` : baseId;
     usedIds.add(id);
 
+    const { aliases: documentedAliases = [], ...support } = documentedLanguages.get(name) ?? { status: "catalogued" };
+
     languages.push({
       index,
       id,
       name,
-      aliases: aliasesFromName(name),
+      aliases: [...new Set([...aliasesFromName(name), ...documentedAliases])],
       macroregions,
       provinces,
       source_id: sourceId,
-      support: documentedLanguages.get(name) ?? { status: "catalogued" },
+      support,
     });
   }
 

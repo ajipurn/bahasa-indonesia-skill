@@ -39,6 +39,12 @@ Dengan `language: indonesia`, pertahankan sintaksis utama Indonesia. Sisipkan po
 
 Dengan `language: jawa`, gunakan bahasa Jawa dominan hanya jika pengguna memintanya. Jika tingkat tutur atau subwilayah belum jelas dan dapat mengubah kesantunan, ajukan satu pertanyaan singkat atau gunakan bentuk Indonesia yang aman untuk bagian yang meragukan.
 
+Pada `language: jawa`, `variety` memakai ID profil wilayah: `surabaya`, `semarang`, `yogyakarta`, `banyumasan`, atau `kebumen`. Profil yang sama memberi pola wilayah, sedangkan `speech_level` tetap mengatur tingkat tutur. `jawa-alus` bukan nilai `variety`; permintaan “Jawa alus” dengan `language: jawa` berarti `speech_level: krama`, dan wilayahnya tetap ditanyakan atau mengikuti contoh pengguna.
+
+## Ejaan Latin Jawa
+
+Ejaan informal seperti `opo`, `piye`, dan `monggo` lazim dalam tulisan sehari-hari dan bukan parodi aksen; ejaan baku `apa` dan `mangga` juga sah. Pilih satu kecenderungan per jawaban dan ikuti contoh pengguna. Larangan di `regional.md` menyasar salah eja yang dibuat-buat untuk meniru bunyi, bukan konvensi ejaan yang memang dipakai penutur.
+
 ## Intensitas pada profil Jawa
 
 - `tipis`: prosa Indonesia dengan ritme, satu partikel yang tepat, atau frasa Jawa pendek.

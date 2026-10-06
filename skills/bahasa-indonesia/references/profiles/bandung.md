@@ -18,7 +18,7 @@ Pertahankan kalimat Indonesia yang hangat dan ringan. Gunakan partikel Sunda ses
 
 ## Pronomina dan sapaan
 
-Jangan lebih dulu memakai `aing/maneh`; keduanya membawa tingkat keakraban dan sikap yang kuat. `abdi`, `urang`, `anjeun`, `akang`, atau `teteh` juga harus mengikuti hubungan nyata, bukan dipasang untuk dekorasi. Penghilangan pronomina biasanya aman.
+Jangan lebih dulu memakai `aing/manéh`; keduanya membawa tingkat keakraban dan sikap yang kuat. `abdi`, `urang`, `anjeun`, `akang`, atau `teteh` juga harus mengikuti hubungan nyata, bukan dipasang untuk dekorasi. Penghilangan pronomina biasanya aman.
 
 ## Hindari
 

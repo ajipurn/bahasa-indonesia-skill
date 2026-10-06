@@ -29,7 +29,7 @@ Registry adalah katalog pengenalan, bukan klaim bahwa model fasih dalam 718 baha
 
 ## Bahasa populer dengan panduan beta
 
-Selain Jawa dan Sunda, panduan awal tersedia untuk 12 bahasa populer lintas wilayah:
+Selain Jawa dan Sunda, panduan awal tersedia untuk 13 bahasa dan kelompok varietas populer lintas wilayah:
 
 | Wilayah | Bahasa | Panduan |
 |---|---|---|
@@ -37,8 +37,13 @@ Selain Jawa dan Sunda, panduan awal tersedia untuk 12 bahasa populer lintas wila
 | Jawa, Bali, Nusa Tenggara | Madura, Bali, Sasak, Bima (Mbojo) | [`languages/java-bali-nusa-tenggara.md`](languages/java-bali-nusa-tenggara.md) |
 | Kalimantan | Banjar, Dayak Ngaju | [`languages/kalimantan.md`](languages/kalimantan.md) |
 | Sulawesi | Bugis, Makassar, Toraja | [`languages/sulawesi.md`](languages/sulawesi.md) |
+| Maluku, Sulawesi Utara, Nusa Tenggara Timur, Papua | Melayu Ambon, Melayu Manado, Melayu Kupang, Melayu Papua | [`languages/melayu.md`](languages/melayu.md) |
 
 `beta` berarti panduan batas, varietas, dan sumber tersedia—bukan berarti keluaran kental sudah tervalidasi. Default-kan ke `intensity: tipis`. Naik ke `sedang` atau `kental` hanya jika pengguna memberi varietas atau contoh yang cukup, lalu nyatakan kebutuhan review penutur bila hasil akan dipublikasikan.
+
+Untuk setiap bahasa `beta`, baca juga [`naturalness.md`](naturalness.md). Urutan kalibrasinya—relasi sosial, situasi tutur, pola wacana, morfologi, lalu kosakata—berlaku sama untuk bahasa daerah penuh, bukan hanya untuk profil regional.
+
+`language: melayu` adalah kasus khusus: entri registry `melayu` mencakup banyak varietas, tetapi panduan hanya tersedia untuk `variety: ambon|manado|kupang|papua`. Tanpa `variety`, minta satu pilihan dan jangan membuat campuran. Varietas Melayu lain seperti Riau, Deli, Pontianak, atau Palembang tetap berperilaku `catalogued` meskipun status entrinya `beta`.
 
 ## Resolusi permintaan
 
@@ -48,7 +53,7 @@ Selain Jawa dan Sunda, panduan awal tersedia untuk 12 bahasa populer lintas wila
 4. Untuk `catalogued`, jelaskan batas secara singkat lalu tawarkan keluaran Indonesia atau adaptasi dari contoh pengguna.
 5. Jika nama tidak ada, jangan menyimpulkan komunitas itu tidak ada. Sumber nasional sendiri belum merekam bahasa imigran, bahasa terpencil, dialek, dan subdialek secara menyeluruh.
 
-Permintaan payung seperti “bahasa Dayak”, “bahasa Batak”, “bahasa Papua”, “bahasa Melayu”, “bahasa Nusa Tenggara”, atau “bahasa Indonesia Timur” dapat mencakup banyak bahasa/varietas. Jangan memilih salah satunya berdasarkan stereotip; minta nama yang lebih spesifik jika keluaran bahasa daerah benar-benar diminta.
+Permintaan payung seperti “bahasa Dayak”, “bahasa Batak”, “bahasa Papua”, “bahasa Melayu”, “bahasa Nusa Tenggara”, atau “bahasa Indonesia Timur” dapat mencakup banyak bahasa/varietas. Jangan memilih salah satunya berdasarkan stereotip; minta nama yang lebih spesifik jika keluaran bahasa daerah benar-benar diminta. “Batak” dan “Melayu” masing-masing hanya satu entri registry, sehingga klarifikasi varietas tidak berujung ke ID yang berbeda; klarifikasi tetap diperlukan agar agent tidak mengarang tuturan satu varietas atas nama varietas lain.
 
 ## Sumbu konfigurasi
 
@@ -63,7 +68,7 @@ Contoh:
 ```yaml
 bahasa_indonesia:
   language: jawa
-  variety: surabaya
+  variety: surabaya # ID profil Jawa; memuat profiles/surabaya.md lewat regional.md
   speech_level: ngoko
   regional_voice: netral
 ```

@@ -35,7 +35,7 @@ Contoh sedang:
 
 > Basically, root cause-nya `token` belum kebaca. Quick fix-nya: cek `.env`, lalu rerun test-nya. Kalau masih gagal, baru kita trace alurnya.
 
-## Sumber dan batas bukti
+## Sumber
 
 - [Analisis sosiolinguistik fenomena Indoglish di Jaksel](https://journal.ikipsiliwangi.ac.id/index.php/project/article/view/7239/0) mendokumentasikan fenomena populer, tetapi korpusnya kecil; jangan menganggap daftar katanya mewakili semua penutur.
 - [Sahib dkk., pola campur kode Indonesia–Inggris lintas enam kota](https://doi.org/10.1155/2021/3402485)
